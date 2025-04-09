@@ -1,6 +1,9 @@
 package com.example.myapplication;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,5 +26,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    //PASKAAAA
+    public void switchToTabView(View view) {
+        // Hae kunnan nimi EditTextistä
+        EditText searchMunicipality = findViewById(R.id.searchMunicipality);
+
+        // Virheenkäsittely: tarkista, onko EditTextissä sisältöä
+        if (searchMunicipality != null && !searchMunicipality.getText().toString().trim().isEmpty()) {
+            // Vaihda activity_main.xml layout activity_tab_view.xml layoutiin
+            setContentView(R.layout.activity_tab_view);
+        } else {
+            // Lähetä huomautus käyttäjälle
+            Toast.makeText(this, "Et antanut kunnan nimeä tekstimuodossa!", Toast.LENGTH_SHORT).show();
+        }
+
+    }
 }
