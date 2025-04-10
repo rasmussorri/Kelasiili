@@ -8,9 +8,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import Fragments.MunicipalityInfoFragment;
-import Fragments.QuizFragment;
-import Fragments.TrafficPlusWeatherInfoFragment;
+import com.example.myapplication.Fragments.MunicipalityInfoFragment;
+import com.example.myapplication.Fragments.QuizFragment;
+import com.example.myapplication.Fragments.TrafficPlusWeatherInfoFragment;
 
 public class TabPagerAdapter extends FragmentStateAdapter {
 
