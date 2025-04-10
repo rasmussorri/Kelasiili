@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -33,7 +34,8 @@ public class MainActivity extends AppCompatActivity {
         // Virheenkäsittely: tarkista, onko EditTextissä sisältöä
         if (searchMunicipality != null && !searchMunicipality.getText().toString().trim().isEmpty()) {
             // Vaihda activity_main.xml layout activity_tab_view.xml layoutiin
-            setContentView(R.layout.activity_tab_view);
+            Intent intent = new Intent(this, TabView.class);
+            startActivity(intent);
         } else {
             // Lähetä huomautus käyttäjälle
             Toast.makeText(this, "Et antanut kunnan nimeä tekstimuodossa!", Toast.LENGTH_SHORT).show();
