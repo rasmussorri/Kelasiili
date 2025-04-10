@@ -8,6 +8,10 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
+import Fragments.MunicipalityInfoFragment;
+import Fragments.QuizFragment;
+import Fragments.TrafficPlusWeatherInfoFragment;
+
 public class TabPagerAdapter extends FragmentStateAdapter {
 
     // ALLA OLEVA KOODI ON COPILOTIN LUOMAA
@@ -29,11 +33,20 @@ public class TabPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return null;
+        switch (position){
+            case 0:
+                return new MunicipalityInfoFragment();
+            case 1:
+                return new TrafficPlusWeatherInfoFragment();
+            case 2:
+                return new QuizFragment();
+        }
+        // Poikkeus, jos laaajennetaan ja unohtuu muokata switch
+        throw new IllegalStateException("Unexpected position: " + position);
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return 3;
     }
 }
