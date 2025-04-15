@@ -52,8 +52,8 @@ public class QuizFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
-        questionText = view.findViewById(R.id.questionText);
-        answersGroup = view.findViewById(R.id.answersGroup);
+        questionText = view.findViewById(R.id.questionTextView);
+        answersGroup = view.findViewById(R.id.answersRG);
         nextButton = view.findViewById(R.id.nextButton);
         // Inflate the layout for this fragment
 

@@ -10,7 +10,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/municipalityNameText2"
+            android:id="@+id/municipalityNameTextView2"
             android:layout_width="match_parent"
             android:layout_height="34dp"
             android:fontFamily="sans-serif-black"
@@ -22,7 +22,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/trafficAlertsText"
+            android:id="@+id/trafficAlertsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
@@ -30,7 +30,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.505"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/municipalityNameText2" />
+            app:layout_constraintTop_toBottomOf="@+id/municipalityNameTextView2" />
 
         <ImageView
             android:id="@+id/trafficCameraImage"
@@ -42,10 +42,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cameraInfoText" />
+            app:layout_constraintTop_toBottomOf="@+id/cameraInfoTextView" />
 
         <TextView
-            android:id="@+id/cameraInfoText"
+            android:id="@+id/cameraInfoTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
@@ -53,10 +53,10 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/trafficAlertsText" />
+            app:layout_constraintTop_toBottomOf="@+id/trafficAlertsTextView" />
 
         <TextView
-            android:id="@+id/weatherInfoText"
+            android:id="@+id/weatherInfoTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -67,17 +67,17 @@
             app:layout_constraintTop_toBottomOf="@+id/trafficCameraImage" />
 
         <ImageView
-            android:id="@+id/weatherImage"
+            android:id="@+id/weatherImageView"
             android:layout_width="58dp"
             android:layout_height="63dp"
             android:layout_marginStart="28dp"
             android:layout_marginTop="44dp"
             android:src="@android:drawable/btn_star"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/weatherInfoText" />
+            app:layout_constraintTop_toBottomOf="@+id/weatherInfoTextView" />
 
         <TextView
-            android:id="@+id/weatherText"
+            android:id="@+id/weatherTextView"
             android:layout_width="169dp"
             android:layout_height="63dp"
             android:layout_marginStart="32dp"
@@ -85,8 +85,8 @@
             android:text="Tähän säätiedot: \n Pilvistä tms. \n  lämpötila"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.024"
-            app:layout_constraintStart_toEndOf="@+id/weatherImage"
-            app:layout_constraintTop_toBottomOf="@+id/weatherInfoText" />
+            app:layout_constraintStart_toEndOf="@+id/weatherImageView"
+            app:layout_constraintTop_toBottomOf="@+id/weatherInfoTextView" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

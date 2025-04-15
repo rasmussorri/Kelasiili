@@ -31,13 +31,18 @@ public class MainActivity extends AppCompatActivity {
 
     public void switchToTabView(View view) {
         // Hae kunnan nimi EditTextistä
-        EditText searchMunicipality = findViewById(R.id.searchMunicipality);
+        EditText searchMunicipality = findViewById(R.id.SearchMunicipalityEditText);
 
         // Virheenkäsittely: tarkista, onko EditTextissä sisältöä
         if (searchMunicipality != null && !searchMunicipality.getText().toString().trim().isEmpty()) {
+
+            //TODO Käynnistä datan haku kunnan nimen avulla
+
             // Vaihda activity_main.xml layout activity_tab_view.xml layoutiin
             Intent intent = new Intent(this, TabView.class);
             startActivity(intent);
+            // Tyhjennä EditText
+            searchMunicipality.setText("");
         } else {
             // Lähetä huomautus käyttäjälle
             Toast.makeText(this, "Et antanut kunnan nimeä tekstimuodossa!", Toast.LENGTH_SHORT).show();

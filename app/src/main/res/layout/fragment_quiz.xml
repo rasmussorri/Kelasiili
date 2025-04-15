@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
-        android:id="@+id/questionText"
+        android:id="@+id/questionTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Kysymys tähän"
@@ -16,11 +16,11 @@
         android:padding="16dp" />
 
     <RadioGroup
-        android:id="@+id/answersGroup"
+        android:id="@+id/answersRG"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toBottomOf="@id/questionText"
+        app:layout_constraintTop_toBottomOf="@id/questionTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:padding="16dp" />
@@ -30,7 +30,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Seuraava"
-        app:layout_constraintTop_toBottomOf="@id/answersGroup"
+        app:layout_constraintTop_toBottomOf="@id/answersRG"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="16dp" />
