@@ -1,0 +1,35 @@
+// Väestön lisäys ja väkiluku
+{
+  "query": [
+    {
+      "code": "Vuosi",
+      "selection": {
+        "filter": "item",
+        "values": [
+          "2023"
+        ]
+      }
+    },
+    {
+      "code": "Alue",
+      "selection": {
+        "filter": "item",
+        "values": [
+          "KU020"
+        ]
+      }
+    },
+    {
+      "code": "Tiedot",
+      "selection": {
+        "filter": "item",
+        "values": [
+          "valisays"
+        ]
+      }
+    }
+  ],
+  "response": {
+    "format": "json-stat2"
+  }
+}
