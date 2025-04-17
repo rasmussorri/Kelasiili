@@ -1,4 +1,4 @@
-package com.example.myapplication.utilities;
+package com.example.myapplication.utilities_plus_helpers;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
