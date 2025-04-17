@@ -42,7 +42,7 @@ public class MunicipalityInfoFragment extends Fragment {
     }
 
     // replikoidaan tilastokeskuksen vaatimaa JSON-muotoa tekemällä sitä vastaava oma query
-    private JsonObject buildQuery( String municipalityCode){
+    private JsonObject buildQuery( String municipalityCode, String dataType){
 
         // Objekti vuodelle
         JsonObject query = new JsonObject();
@@ -73,6 +73,29 @@ public class MunicipalityInfoFragment extends Fragment {
 
         // Objekti haetulle tiedolle
         JsonArray data = new JsonArray();
+        data.add(dataType);
+
+        JsonObject dataSelection = new JsonObject();
+        dataSelection.addProperty("filter", "item");
+        dataSelection.add("values", data);
+
+        JsonObject dataQuery = new JsonObject();
+        dataQuery.addProperty("code", "Tiedot");
+        dataQuery.add("selection", dataSelection);
+
+        // Lista koko kyselylle
+
+        JsonArray queryList = new JsonArray();
+        queryList.add(yearQuery);
+        queryList.add(municipalityQuery);
+        queryList.add(dataQuery);
+
+        JsonObject responseObject = new JsonObject();
+        responseObject.addProperty("format", "json-stat2");
+
+        // Objekti koko kyselylle
+        query.add("query", queryList);
+        query.add("response", responseObject);
 
 
 
