@@ -7,6 +7,14 @@ public class MunicipalityInfo {
     private double jobSelfReliance;
     private double employmentRate;
 
+    public MunicipalityInfo(String name, int population, int populationChange, double jobSelfReliance, double employmentRate) {
+        this.name = name;
+        this.population = population;
+        this.populationChange = populationChange;
+        this.jobSelfReliance = jobSelfReliance;
+        this.employmentRate = employmentRate;
+    }
+
     public String getName() {
         return name;
     }
