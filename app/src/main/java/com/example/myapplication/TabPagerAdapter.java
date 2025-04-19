@@ -8,9 +8,9 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.example.myapplication.Fragments.MunicipalityInfoFragment;
-import com.example.myapplication.Fragments.QuizFragment;
-import com.example.myapplication.Fragments.TrafficPlusWeatherInfoFragment;
+import com.example.myapplication.fragments.MunicipalityInfoFragment;
+import com.example.myapplication.fragments.QuizFragment;
+import com.example.myapplication.fragments.TrafficPlusWeatherInfoFragment;
 
 public class TabPagerAdapter extends FragmentStateAdapter {
 
@@ -41,7 +41,7 @@ public class TabPagerAdapter extends FragmentStateAdapter {
             case 2:
                 return new QuizFragment();
         }
-        // Poikkeus, jos laaajennetaan ja unohtuu muokata switch
+        // Poikkeus, jos laajennetaan ja unohtuu muokata switch
         throw new IllegalStateException("Unexpected position: " + position);
     }
 

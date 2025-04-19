@@ -114,7 +114,7 @@ public class QuizFragment extends Fragment {
 
         return view;
     }
-    public class FakeDataProvider {
+    public static class FakeDataProvider {
         public static List<MunicipalityInfo> getMunicipalities() {
             List<MunicipalityInfo> list = new ArrayList<>();
             list.add(new MunicipalityInfo("Helsinki", 650000, 58000, 50.0, 1.2));

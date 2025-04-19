@@ -25,7 +25,6 @@ public class QuizQuestionGenerator {
 
         return questions;
     }
-
     private static Question generatePopulationQuestion(List<MunicipalityInfo> municipalities) {
         List<MunicipalityInfo> selected = getRandomMunicipalities(municipalities, 3);
         MunicipalityInfo correct = Collections.max(selected, Comparator.comparingInt(MunicipalityInfo::getPopulation));

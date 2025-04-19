@@ -35,11 +35,13 @@ public class MainActivity extends AppCompatActivity {
 
         // Virheenkäsittely: tarkista, onko EditTextissä sisältöä
         if (searchMunicipality != null && !searchMunicipality.getText().toString().trim().isEmpty()) {
+            String municipalityName = searchMunicipality.getText().toString().trim();
 
             //TODO Käynnistä datan haku kunnan nimen avulla
 
             // Vaihda activity_main.xml layout activity_tab_view.xml layoutiin
             Intent intent = new Intent(this, TabView.class);
+            intent.putExtra("municipality_name", municipalityName);
             startActivity(intent);
             // Tyhjennä EditText
             searchMunicipality.setText("");
