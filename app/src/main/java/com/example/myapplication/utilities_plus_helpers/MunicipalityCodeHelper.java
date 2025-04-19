@@ -2,6 +2,7 @@ package com.example.myapplication.utilities_plus_helpers;
 
 import com.google.gson.annotations.SerializedName;
 import retrofit2.Call;
+import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
@@ -29,8 +30,14 @@ public class MunicipalityCodeHelper {
             public List<String> valueTexts;
         }
     }
+    public interface MunicipalityCodeCallback {
+        void onCodeFound(String code);
+        void onError(String errorMessage);
+    }
 
-    public static String getMunicipalityCode(String municipality) {
+
+    // Tämä pitää muuttaa ApiServiceBuilderin kautta meneväksi
+    public static void getMunicipalityCode(String municipality, MunicipalityCodeCallback callback) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://pxdata.stat.fi/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -38,27 +45,34 @@ public class MunicipalityCodeHelper {
 
         ApiService api = retrofit.create(ApiService.class);
 
-        try {
-            MetadataResponse data = api.getMetadata().execute().body();
-            if (data != null) {
-                for (MetadataResponse.Variable variable : data.variables) {
-                    if ("Alue".equals(variable.code)) {
-                        List<String> names = variable.valueTexts;
-                        List<String> codes = variable.values;
+        api.getMetadata().enqueue(new retrofit2.Callback<MetadataResponse>() {
+            @Override
+            public void onResponse(Call<MetadataResponse> call, Response<MetadataResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    for (MetadataResponse.Variable variable : response.body().variables) {
+                        if ("Alue".equals(variable.code)) {
+                            List<String> names = variable.valueTexts;
+                            List<String> codes = variable.values;
 
-                        for (int i = 0; i < names.size(); i++) {
-                            if (names.get(i).toLowerCase().equals(municipality.toLowerCase())) {
-                                return codes.get(i);
+                            for (int i = 0; i < names.size(); i++) {
+                                if (names.get(i).equalsIgnoreCase(municipality)) {
+                                    callback.onCodeFound(codes.get(i));
+                                    return;
+                                }
                             }
+                            callback.onError("Kuntaa ei löytynyt: " + municipality);
+                            return;
                         }
                     }
+                } else {
+                    callback.onError("Virhe vastauksessa API:lta.");
                 }
-            } else {
-                System.out.println("Virhe: tyhjä vastaus API:lta.");
             }
-        } catch (IOException e) {
-            System.out.println("Verkkovirhe: " + e.getMessage());
-        }
-        return null;
+
+            @Override
+            public void onFailure(Call<MetadataResponse> call, Throwable t) {
+                callback.onError("Verkkovirhe: " + t.getMessage());
+            }
+        });
     }
 }

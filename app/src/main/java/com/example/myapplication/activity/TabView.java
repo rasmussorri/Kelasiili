@@ -2,6 +2,7 @@ package com.example.myapplication.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -10,12 +11,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.myapplication.R;
+import com.example.myapplication.TabPagerAdapter;
 import com.example.myapplication.fragments.MunicipalityInfoFragment;
 import com.example.myapplication.utilities_plus_helpers.MunicipalityDataHelper;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 public class TabView extends AppCompatActivity {
+
+    private ViewPager2 fragmentArea;
+    private TabLayout fragmentSelector;
+    private TabPagerAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +38,26 @@ public class TabView extends AppCompatActivity {
             return insets;
         });
 
+        fragmentArea = findViewById(R.id.fragmentArea);
+        fragmentSelector = findViewById(R.id.fragmentSelector);
+
+        adapter = new TabPagerAdapter(this);
+        fragmentArea.setAdapter(adapter);
+
+        new TabLayoutMediator(fragmentSelector, fragmentArea, (tab, position) -> {
+            switch (position) {
+                case 0:
+                    tab.setText("Kunta");
+                    break;
+                case 1:
+                    tab.setText("Liikenne/sää");
+                    break;
+                case 2:
+                    tab.setText("Visa");
+                    break;
+            }
+        }).attach();
+
         // Hae kunnan nimi intentistä
         String municipalityName = getIntent().getStringExtra("municipality_name");
         if (municipalityName != null) {
@@ -35,22 +65,21 @@ public class TabView extends AppCompatActivity {
         }
     }
 
-    /**
-     * Fetches municipality data using the provided municipality name.
-     *
-     * @param municipalityName The name of the municipality to fetch data for.
-     */
     private void fetchMunicipalityData(String municipalityName) {
         MunicipalityDataHelper dataHelper = new MunicipalityDataHelper();
         dataHelper.fetchPopulationAndChange(municipalityName, new MunicipalityDataHelper.Listener() {
             @Override
             public void onMunicipalityDataReady(int population, String populationChange) {
-                MunicipalityInfoFragment fragment = (MunicipalityInfoFragment) getSupportFragmentManager()
-                        .findFragmentById(R.id.municipalityInfoFragment); // ID from activity_tab_view.xml
-
-                if (fragment != null && fragment.getView() != null) {
-                    String municipalityName = getIntent().getStringExtra("municipality_name");
-                    fragment.updateMunicipalityInfo(municipalityName, population, populationChange, 0, 0);
+                System.out.println("Väkiluku: " + population + ", Väkiluvun muutos: " + populationChange);
+                Fragment fragment = adapter.getFragment(0);
+                if (fragment instanceof MunicipalityInfoFragment) {
+                    ((MunicipalityInfoFragment) fragment).updateMunicipalityInfo(
+                            municipalityName,
+                            population,
+                            populationChange,
+                            0,
+                            0
+                    );
                 } else {
                     Toast.makeText(TabView.this, "Fragmentti ei ole valmis", Toast.LENGTH_SHORT).show();
                 }

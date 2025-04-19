@@ -20,15 +20,31 @@ public class TabPagerAdapter extends FragmentStateAdapter {
 
     public TabPagerAdapter(FragmentActivity fa) {
         super(fa);
+        fragmentList.add(new MunicipalityInfoFragment());
+        fragmentList.add(new TrafficPlusWeatherInfoFragment());
+        fragmentList.add(new QuizFragment());
     }
 
+    @NonNull
+    @Override
+    public Fragment createFragment(int position) {
+        return fragmentList.get(position);
+    }
 
+    @Override
+    public int getItemCount() {
+        return fragmentList.size();
+    }
+
+    public Fragment getFragment(int position) {
+        return fragmentList.get(position);
+    }
+
+    /*
     public void addFragment(Fragment fragment, String title) {
         fragmentList.add(fragment);
         fragmentTitleList.add(title);
     }
-
-
 
     @NonNull
     @Override
@@ -48,5 +64,5 @@ public class TabPagerAdapter extends FragmentStateAdapter {
     @Override
     public int getItemCount() {
         return 3;
-    }
+    } */
 }
