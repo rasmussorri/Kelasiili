@@ -6,6 +6,7 @@
     tools:context=".Fragments.MunicipalityInfoFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/municipalityInfoFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
