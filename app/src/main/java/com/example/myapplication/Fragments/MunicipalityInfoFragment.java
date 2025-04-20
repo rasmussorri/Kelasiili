@@ -52,15 +52,25 @@ public class MunicipalityInfoFragment extends Fragment {
 
     private void fetchMunicipalityData(String municipalityName, View view){
         TextView populationTextView = view.findViewById(R.id.populationTextView);
+        TextView changeTextView = view.findViewById(R.id.populationChangeTextView);
+        TextView municipalityNameTextView = view.findViewById(R.id.municipalityNameTextView);
+        TextView employmentRateTextView = view.findViewById(R.id.employmentRateTextView);
+        TextView selfRelianceRateTextView = view.findViewById(R.id.jobSelfRelianceTextView);
+
+        municipalityNameTextView.setText(municipalityName.toUpperCase()+ " " + year);
 
         MunicipalityDataHelper municipalityDataHelper = new MunicipalityDataHelper();
-        municipalityDataHelper.fetchPopulationAndChange(municipalityName, new MunicipalityDataHelper.Listener() {
+        municipalityDataHelper.fetchData(municipalityName, new MunicipalityDataHelper.Listener() {
             @Override
-            public void onMunicipalityDataReady(String population) {
-                // päivittää kunnan väkiluvun
+            public void onMunicipalityDataReady(String population, String change, String selfRelianceRate, String employmentRate) {
+                // päivittää kunnan tiedot
                 populationTextView.setText("Väkiluku: " + population);
+                changeTextView.setText("Väkiluvun muutos: " + change);
+                employmentRateTextView.setText("Työllisyysaste: " + employmentRate);
+                selfRelianceRateTextView.setText("Työpaikkaomavaraisuus: " + selfRelianceRate);
 
             }
+
 
             @Override
             public void onError(String errorMessage) {

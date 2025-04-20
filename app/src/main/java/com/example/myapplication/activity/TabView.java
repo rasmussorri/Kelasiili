@@ -14,6 +14,8 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.myapplication.Fragments.MunicipalityInfoFragment;
 import com.example.myapplication.R;
 import com.example.myapplication.TabPagerAdapter;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 public class TabView extends AppCompatActivity {
 
@@ -27,6 +29,26 @@ public class TabView extends AppCompatActivity {
         TabPagerAdapter adapter = new TabPagerAdapter(this, municipalityName);
         ViewPager2 viewPager = findViewById(R.id.fragmentArea);
         viewPager.setAdapter(adapter);
+
+        TabLayout tabLayout = findViewById(R.id.fragmentSelector);
+
+        // TabLayoutin ja ViewPager2:n yhdistäminen
+        // Mediator yhdistää nämä kaksi komponenttia. Ei voi kovakoodata xml tiedostoon,
+        // sillä muuten fragmentit eivät päivittyisi vaihdettaessa
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> {
+                    switch (position) {
+                        case 0:
+                            tab.setText("Kunnan tiedot");
+                            break;
+                        case 1:
+                            tab.setText("Liikenne ja sää");
+                            break;
+                        case 2:
+                            tab.setText("Tietovisa");
+                            break;
+                    }
+                }).attach();
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
