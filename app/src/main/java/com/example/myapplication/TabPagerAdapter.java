@@ -14,19 +14,15 @@ import com.example.myapplication.Fragments.TrafficPlusWeatherInfoFragment;
 
 public class TabPagerAdapter extends FragmentStateAdapter {
 
-    // ALLA OLEVA KOODI ON COPILOTIN LUOMAA
-    private final List<Fragment> fragmentList = new ArrayList<>();
-    private final List<String> fragmentTitleList = new ArrayList<>();
+    private String municipalityName;
 
-    public TabPagerAdapter(FragmentActivity fa) {
+    public TabPagerAdapter (FragmentActivity fa, String municipalityName) {
         super(fa);
+        this.municipalityName = municipalityName;
     }
 
 
-    public void addFragment(Fragment fragment, String title) {
-        fragmentList.add(fragment);
-        fragmentTitleList.add(title);
-    }
+
 
 
 
@@ -35,7 +31,7 @@ public class TabPagerAdapter extends FragmentStateAdapter {
     public Fragment createFragment(int position) {
         switch (position){
             case 0:
-                return new MunicipalityInfoFragment();
+                return MunicipalityInfoFragment.newInstance(municipalityName);
             case 1:
                 return new TrafficPlusWeatherInfoFragment();
             case 2:
