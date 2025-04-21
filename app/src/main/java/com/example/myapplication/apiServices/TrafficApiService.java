@@ -7,7 +7,7 @@ import retrofit2.http.GET;
 
 public interface TrafficApiService {
 
-    @GET("traffic-camera/stations")
+    @GET("stations")
     Call<TrafficCameraResponse> getAllCameras();
 
 }
