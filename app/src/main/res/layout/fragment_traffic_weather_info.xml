@@ -11,8 +11,8 @@
 
         <TextView
             android:id="@+id/municipalityNameTextView2"
-            android:layout_width="match_parent"
-            android:layout_height="34dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:fontFamily="sans-serif-black"
             android:text="Kunnan nimi tähän"
             android:textAlignment="center"
@@ -25,24 +25,33 @@
             android:id="@+id/trafficAlertsTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="16dp"
             android:text="Liikennetiedotteet jos on"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.505"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/municipalityNameTextView2" />
 
-        <ImageView
-            android:id="@+id/trafficCameraImage"
+        <ScrollView
+            android:id="@+id/cameraScrollView"
             android:layout_width="0dp"
-            android:layout_height="300dp"
-            android:layout_marginTop="8dp"
-            android:contentDescription="Traffic camera view"
-            android:scaleType="centerCrop"
+            android:layout_height="0dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toTopOf="@+id/weatherInfoTextView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cameraInfoTextView" />
+            app:layout_constraintTop_toBottomOf="@id/municipalityNameTextView2"
+            app:layout_constraintVertical_bias="1.0">
+
+            <LinearLayout
+                android:id="@+id/cameraImageContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp" />
+        </ScrollView>
 
         <TextView
             android:id="@+id/cameraInfoTextView"
@@ -59,12 +68,12 @@
             android:id="@+id/weatherInfoTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginBottom="200dp"
             android:text="Sää"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/trafficCameraImage" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <ImageView
             android:id="@+id/weatherImageView"

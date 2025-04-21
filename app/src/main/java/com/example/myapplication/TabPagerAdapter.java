@@ -33,7 +33,7 @@ public class TabPagerAdapter extends FragmentStateAdapter {
             case 0:
                 return MunicipalityInfoFragment.newInstance(municipalityName);
             case 1:
-                return new TrafficPlusWeatherInfoFragment();
+                return TrafficPlusWeatherInfoFragment.newInstance(municipalityName);
             case 2:
                 return new QuizFragment();
         }

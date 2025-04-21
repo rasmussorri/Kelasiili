@@ -80,7 +80,4 @@ public class MunicipalityInfoFragment extends Fragment {
             }
         }, year);
     }
-
-
-
 }
