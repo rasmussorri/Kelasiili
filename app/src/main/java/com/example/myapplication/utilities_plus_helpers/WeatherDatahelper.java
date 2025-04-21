@@ -50,6 +50,8 @@ public class WeatherDatahelper {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     String xml = response.body().string();
+                    Log.d("FMI_AIR_QUALITY_XML", xml); // ✅ tämä näyttää koko raakadatan
+
                     String something = XmlWeatherParser.parse(xml, "PM10"); //TODO
                     String somethingElse = XmlWeatherParser.parse(xml, "PM2.5"); //TODO
                     listener.onAirQualityDataReceived(something, somethingElse);
