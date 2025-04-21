@@ -1,5 +1,7 @@
 package com.example.myapplication.utilities_plus_helpers;
 
+import android.util.Log;
+
 import com.example.myapplication.apiServices.WeatherApiService;
 
 import okhttp3.ResponseBody;
@@ -17,7 +19,7 @@ public class WeatherDatahelper {
 
     }
 
-    public void fetchWeatherData(String municipality, WeatherListener listener) {
+    public static void fetchWeatherData(String municipality, WeatherListener listener) {
 
         WeatherApiService api = ApiServiceBuilder.createService(WeatherApiService.class, "https://opendata.fmi.fi/wfs");
         String weatherQuery = WeatherQueryBuilder.buildWeatherQuery(municipality);
@@ -28,6 +30,7 @@ public class WeatherDatahelper {
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
                     String xml = response.body().string();
+                    Log.d("FMI_XML", xml);
                     String temperature = XmlWeatherParser.parse(xml, "Temperature");
                     String symbol = XmlWeatherParser.parse(xml, "WeatherSymbol3");
                     listener.onWeatherDataReceived(temperature, symbol);
@@ -50,6 +53,7 @@ public class WeatherDatahelper {
                     String something = XmlWeatherParser.parse(xml, "PM10"); //TODO
                     String somethingElse = XmlWeatherParser.parse(xml, "PM2.5"); //TODO
                     listener.onAirQualityDataReceived(something, somethingElse);
+                    Log.d("AirQuality", "Ilmanlaadun tiedot: " + something + ", " + somethingElse);
                 } catch (Exception e) {
                     listener.onError("Ilmanlaadun käsittely epäonnistui");
                 }

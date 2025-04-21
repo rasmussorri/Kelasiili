@@ -7,10 +7,10 @@ public class WeatherQueryBuilder {
     public static String buildWeatherQuery(String municipality) {
         return BASE_URL +
                 "?request=getFeature" +
-                "&storedquery_id=fmi::observations::weather::current::simple" +
+                "&storedquery_id=fmi::observations::weather::hourly::simple" +
                 "&place=" + municipality +
-                "&parameters=temperature,weatherSymbol3" +
-                "&timestep=30";
+                "&parameters=TA_PT1H_AVG,WAWA_PT1H_RANK" +
+                "&format=text/xml";
     }
 
     public static String buildAirQualityQuery(String municipality) {
@@ -18,7 +18,8 @@ public class WeatherQueryBuilder {
                 "?request=getFeature" +
                 "&storedquery_id=fmi::observations::airquality::hour::simple" +
                 "&place=" + municipality +
-                "&parameters=PM10,PM2.5";
+                "&parameters=PM10,PM2.5" +
+                "&format=text/xml";
     }
 
 }

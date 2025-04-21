@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.example.myapplication.utilities_plus_helpers.MunicipalityDataHelper;
 import com.example.myapplication.utilities_plus_helpers.TrafficCameraHelper;
+import com.example.myapplication.utilities_plus_helpers.WeatherDatahelper;
 
 import java.util.List;
 
@@ -36,19 +37,20 @@ public class TrafficPlusWeatherInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_traffic_weather_info, container, false);
-
+        TextView titleTextView = view.findViewById(R.id.municipalityNameTextView2);
         String municipalityName = getArguments() != null ? getArguments().getString(ARG_MUNICIPALITY_NAME) : null;
+        titleTextView.setText("Kelikamerat: " + municipalityName.toUpperCase());
 
-        if (municipalityName != null) {
-            fetchTrafficCameraImages(municipalityName, view);
-        }
+        fetchTrafficCameraImages(municipalityName, view);
+        fetchWeather(municipalityName, view);
+
 
         return view;
     }
 
     private void fetchTrafficCameraImages(String municipalityName, View view) {
-        TextView titleTextView = view.findViewById(R.id.municipalityNameTextView);
-        titleTextView.setText("Kelikamerat: " + municipalityName);
+
+
 
         LinearLayout cameraContainer = view.findViewById(R.id.cameraImageContainer);
 
@@ -74,6 +76,31 @@ public class TrafficPlusWeatherInfoFragment extends Fragment {
                 cameraContainer.addView(errorTextView);
             }
         });
+    }
+
+    private void fetchWeather(String municipalityName, View view){
+        TextView weatherTextView = view.findViewById(R.id.weatherTextView);
+
+
+        WeatherDatahelper.fetchWeatherData(municipalityName, new WeatherDatahelper.WeatherListener() {
+
+
+            @Override
+            public void onWeatherDataReceived(String weatherData, String symbol) {
+                weatherTextView.setText(weatherData);
+            }
+
+            @Override
+            public void onAirQualityDataReceived(String jotain, String jottaa) {
+
+            }
+
+            @Override
+            public void onError(String error) {
+                weatherTextView.setText("Virhe sään haussa: " + error);
+            }
+        });
+
     }
 }
 

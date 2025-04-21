@@ -6,12 +6,20 @@ public class XmlWeatherParser {
 
     public static String parse(String xml, String tagName) {
         try {
-            int tagStart = xml.indexOf("<BsWfs:ParameterName>" + tagName + "</BsWfs:ParameterName>");
+            String nameTag = "<BsWfs:ParameterName>" + tagName + "</BsWfs:ParameterName>";
+            // ottaa viimeisen tunnin sään
+            int tagStart = xml.lastIndexOf(nameTag);
             if (tagStart == -1) return "-";
-            String openTag = "<BsWfs:ParameterValue>";
-            int valueTagStart = xml.indexOf(openTag, tagStart);
-            int valueTagEnd = xml.indexOf("</BsWfs:ParameterValue>", tagStart);
-            return xml.substring(valueTagStart + openTag.length(), valueTagEnd).trim();
+
+            String valueStartTag = "<BsWfs:ParameterValue>";
+            String valueEndTag = "</BsWfs:ParameterValue>";
+
+            int valueStart = xml.indexOf(valueStartTag, tagStart);
+            int valueEnd = xml.indexOf(valueEndTag, valueStart);
+
+            if (valueStart == -1 || valueEnd == -1) return "-";
+
+            return xml.substring(valueStart + valueStartTag.length(), valueEnd).trim();
         } catch (Exception e) {
             return "-";
         }
