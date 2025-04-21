@@ -13,11 +13,11 @@ public class WeatherQueryBuilder {
                 "&format=text/xml";
     }
 
-    public static String buildAirQualityQuery(String municipality) {
+    public static String buildAirQualityQuery(String fmisid) {
         return BASE_URL +
                 "?request=getFeature" +
                 "&storedquery_id=fmi::observations::airquality::hour::simple" +
-                "&place=" + municipality +
+                "&fmisid=" + fmisid +
                 "&parameters=PM10,PM2.5" +
                 "&format=text/xml";
     }
