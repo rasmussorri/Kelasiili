@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.dataModels.MunicipalityInfo;
 import com.example.myapplication.utilities_plus_helpers.MunicipalityDataHelper;
+import com.example.myapplication.utilities_plus_helpers.SearchedMunicipalitiesManager;
 
 
 public class MunicipalityInfoFragment extends Fragment {
@@ -68,6 +70,19 @@ public class MunicipalityInfoFragment extends Fragment {
                 changeTextView.setText("Väkiluvun muutos: " + change);
                 employmentRateTextView.setText("Työllisyysaste: " + employmentRate);
                 selfRelianceRateTextView.setText("Työpaikkaomavaraisuus: " + selfRelianceRate);
+
+                try {
+                    int pop = Integer.parseInt(population);
+                    int popChange = Integer.parseInt(change);
+                    double selfRel = Double.parseDouble(selfRelianceRate);
+                    double empRate = Double.parseDouble(employmentRate);
+
+                    MunicipalityInfo info = new MunicipalityInfo(municipalityName, pop, popChange, selfRel, empRate);
+                    SearchedMunicipalitiesManager.addMunicipality(info);
+                } catch (NumberFormatException e) {
+                    // Optional: Log or handle invalid data formats
+                    e.printStackTrace();
+                }
 
             }
 
