@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,10 +25,7 @@ import com.example.myapplication.utilities_plus_helpers.XmlWeatherParser;
 
 import java.util.List;
 
-import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+
 
 
 public class TrafficPlusWeatherInfoFragment extends Fragment {
@@ -53,6 +51,10 @@ public class TrafficPlusWeatherInfoFragment extends Fragment {
 
         fetchTrafficCameraImages(municipalityName, view);
         fetchWeatherAndAirQuality(municipalityName, view);
+
+
+        Log.d("TrafficFrag", "fetchWeatherAndAirQuality for " + municipalityName);
+
 
 
         return view;
@@ -88,59 +90,50 @@ public class TrafficPlusWeatherInfoFragment extends Fragment {
     }
 
     private void fetchWeatherAndAirQuality(String municipalityName, View view) {
+
+        Log.d("TrafficFrag", "fetchWeatherAndAirQuality for " + municipalityName);
+
         TextView weatherTextView = view.findViewById(R.id.weatherTextView);
         TextView airQualityTextView = view.findViewById(R.id.airQualityText);
 
-        // 1) First: get the FMIS station ID in a background thread
         StationHelper.fetchStationData(requireContext(), municipalityName, new StationHelper.StationListener() {
             @Override
             public void onStationSelected(String stationId) {
-                // stationId is a String like "101004"
-                // Now we must switch back to the UI thread to kick off Retrofit & touch views:
+                // Now that we have the stationId, kick off both calls via your helper:
                 requireActivity().runOnUiThread(() -> {
-                    // 2a) Weather call
-                    WeatherApiService api = ApiServiceBuilder
-                            .createService(WeatherApiService.class, "https://opendata.fmi.fi/wfs");
-                    String weatherUrl = WeatherQueryBuilder.buildWeatherQuery(municipalityName);
-                    api.getCurrentWeather(weatherUrl).enqueue(new Callback<ResponseBody>() {
+                    WeatherDatahelper.fetchWeatherAndAirQuality(municipalityName, stationId, new WeatherDatahelper.WeatherListener() {
                         @Override
-                        public void onResponse(Call<ResponseBody> c, Response<ResponseBody> r) {
-                            try {
-                                String xml = r.body().string();
-                                String temp = XmlWeatherParser.parse(xml, "Temperature");
-                                weatherTextView.setText("Temp: " + temp + " °C");
-                            } catch (Exception e) {
-                                weatherTextView.setText("Säädatan käsittely epäonnistui");
-                            }
+                        public void onWeatherDataReceived(String temp, String symbol) {
+                            requireActivity().runOnUiThread(() ->
+                                    weatherTextView.setText("Temp: " + temp + " °C"));
                         }
 
                         @Override
-                        public void onFailure(Call<ResponseBody> c, Throwable t) {
-                            weatherTextView.setText("Virhe sään haussa: " + t.getMessage());
-                        }
-                    });
+                        public void onAirQualityDataReceived(String pm25, String pm10, String no2, String o3,
+                                                             String so2, String co, String no,
+                                                             String aqIndex, String aqIndexClass, String aqIndexText) {
+                            StringBuilder sb = new StringBuilder();
+                            sb.append("PM2.5: ").append(pm25).append("\n");
+                            sb.append("PM10: ").append(pm10).append("\n");
+                            sb.append("NO2: ").append(no2).append("\n");
+                            sb.append("O3: ").append(o3).append("\n");
+                            sb.append("SO2: ").append(so2).append("\n");
+                            sb.append("CO: ").append(co).append("\n");
+                            sb.append("NO: ").append(no).append("\n");
+                            sb.append("Air Quality Index: ").append(aqIndex).append("\n");
+                            sb.append("AQI Class: ").append(aqIndexClass).append("\n");
+                            sb.append("AQI Description: ").append(aqIndexText).append("\n");
+                            Log.d("Fragment", "Air Quality Data: " + sb.toString());
 
-                    // 2b) Air‑quality call (now passing stationId, not the municipality)
-                    String aqUrl = WeatherQueryBuilder.buildAirQualityQuery(stationId);
-                    api.getAirQuality(aqUrl).enqueue(new Callback<ResponseBody>() {
-                        @Override
-                        public void onResponse(Call<ResponseBody> c, Response<ResponseBody> r) {
-                            try {
-                                String xml = r.body().string();
-                                String pm10 = XmlWeatherParser.parse(xml, "PM10");
-                                String pm25 = XmlWeatherParser.parse(xml, "PM2.5");
-                                airQualityTextView.setText(
-                                        "PM₁₀: " + pm10 + " µg/m³\n" +
-                                                "PM₂.₅: " + pm25 + " µg/m³"
-                                );
-                            } catch (Exception e) {
-                                airQualityTextView.setText("Ilmanlaadun käsittely epäonnistui");
-                            }
+                            requireActivity().runOnUiThread(() ->
+                                    airQualityTextView.setText(sb.toString())
+                            );
                         }
 
                         @Override
-                        public void onFailure(Call<ResponseBody> c, Throwable t) {
-                            airQualityTextView.setText("Ilmanlaadun haku epäonnistui: " + t.getMessage());
+                        public void onError(String errorMessage) {
+                            weatherTextView.setText(errorMessage);
+                            airQualityTextView.setText(errorMessage);
                         }
                     });
                 });
@@ -148,9 +141,8 @@ public class TrafficPlusWeatherInfoFragment extends Fragment {
 
             @Override
             public void onError(String error) {
-                // back to UI thread for the error
                 requireActivity().runOnUiThread(() ->
-                        airQualityTextView.setText("Asemaa ei löytynyt: " + error)
+                        airQualityTextView.setText(String.format("Asemaa ei löytynyt: %s", error))
                 );
             }
         });

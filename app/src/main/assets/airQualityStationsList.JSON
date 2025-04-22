@@ -1,0 +1,227 @@
+[
+  { "municipality": "Parainen", "stationName": "Parainen Utö", "fmisid": "100908" },
+  { "municipality": "Jomala", "stationName": "Jomala Jomalaby", "fmisid": "100917" },
+  { "municipality": "Hanko", "stationName": "Hanko Tvärminne", "fmisid": "100953" },
+  { "municipality": "Helsinki", "stationName": "Helsinki Kumpula", "fmisid": "101004" },
+  { "municipality": "Jokioinen", "stationName": "Jokioinen Ilmala", "fmisid": "101104" },
+  { "municipality": "Hämeenlinna", "stationName": "Hämeenlinna Kotinen", "fmisid": "101188" },
+  { "municipality": "Virolahti", "stationName": "Virolahti Koivuniemi", "fmisid": "101231" },
+  { "municipality": "Juupajoki", "stationName": "Juupajoki Hyytiälä", "fmisid": "101317" },
+  { "municipality": "Savonlinna", "stationName": "Savonlinna Punkaharju Laukansaari", "fmisid": "101441" },
+  { "municipality": "Ähtäri", "stationName": "Ähtäri Inha", "fmisid": "101520" },
+  { "municipality": "Kuopio", "stationName": "Kuopio Puijo", "fmisid": "101587" },
+  { "municipality": "Ilomantsi", "stationName": "Ilomantsi Pötsönvaara", "fmisid": "101649" },
+  { "municipality": "Lieksa", "stationName": "Lieksa Hietajärvi", "fmisid": "101650" },
+  { "municipality": "Hailuoto", "stationName": "Hailuoto Marjaniemi", "fmisid": "101784" },
+  { "municipality": "Kuusamo", "stationName": "Kuusamo Juuma", "fmisid": "101899" },
+  { "municipality": "Sodankylä", "stationName": "Sodankylä Tähtelä", "fmisid": "101932" },
+  { "municipality": "Sodankylä", "stationName": "Sodankylä Heikinheimo-masto", "fmisid": "101942" },
+  { "municipality": "Muonio", "stationName": "Muonio Sammaltunturi", "fmisid": "101983" },
+  { "municipality": "Kittilä", "stationName": "Kittilä Matorova", "fmisid": "101985" },
+  { "municipality": "Inari", "stationName": "Inari Raja-Jooseppi", "fmisid": "102009" },
+  { "municipality": "Salla", "stationName": "Salla Värriötunturi", "fmisid": "102012" },
+  { "municipality": "Utsjoki", "stationName": "Utsjoki Kevo", "fmisid": "102035" },
+  { "municipality": "Hailuoto", "stationName": "Hailuoto Kujalannurkka", "fmisid": "104109" },
+  { "municipality": "Virolahti", "stationName": "Virolahti Harju", "fmisid": "108036" },
+  { "municipality": "Kittilä", "stationName": "Kittilä Lompolonvuoma", "fmisid": "778135" },
+  { "municipality": "Helsinki",  "stationName": "Helsinki Kallio 2",               "fmisid": "100662" },
+  { "municipality": "Espoo",     "stationName": "Espoo Leppävaara Läkkisepänkuja", "fmisid": "100691" },
+  { "municipality": "Espoo",     "stationName": "Espoo Luukki",                  "fmisid": "100723" },
+  { "municipality": "Helsinki",  "stationName": "Helsinki Mannerheimintie",       "fmisid": "100742" },
+  { "municipality": "Helsinki",  "stationName": "Helsinki Mäkelänkatu",           "fmisid": "100762" },
+  { "municipality": "Helsinki",  "stationName": "Helsinki Vartiokylä Huivipolku",  "fmisid": "100803" },
+  { "municipality": "Kaarina",   "stationName": "Kaarina Kaarina",               "fmisid": "100823" },
+  { "municipality": "Naantali",  "stationName": "Naantali keskusta Asematori",    "fmisid": "100824" },
+  { "municipality": "Turku",     "stationName": "Turku Ruissalo Saarontie",       "fmisid": "100845" },
+  { "municipality": "Kuopio",    "stationName": "Kuopio Haminalahti",            "fmisid": "100882" },
+  { "municipality": "Juupajoki", "stationName": "Juupajoki Hyytiälä",            "fmisid": "101317" },
+  { "municipality": "Lahti",       "stationName": "Lahti Kisapuisto",               "fmisid": "103130" },
+  { "municipality": "Lahti",       "stationName": "Lahti Laune Pohjoinen Liipolankatu","fmisid": "103131" },
+  { "municipality": "Lahti",       "stationName": "Lahti Saimaankatu",                "fmisid": "103132" },
+  { "municipality": "Lahti",       "stationName": "Lahti Satulakatu",                 "fmisid": "103133" },
+  { "municipality": "Lahti",       "stationName": "Lahti Vesku 11",                   "fmisid": "103134" },
+  { "municipality": "Pori",        "stationName": "Pori Pastuskeri",                  "fmisid": "103135" },
+  { "municipality": "Porvoo",      "stationName": "Porvoo Mustijoki",                 "fmisid": "103139" },
+  { "municipality": "Porvoo",      "stationName": "Porvoo Nyby",                      "fmisid": "103140" },
+  { "municipality": "Porvoo",      "stationName": "Porvoo Svartbäck",                 "fmisid": "103141" },
+  { "municipality": "Harjavalta",  "stationName": "Harjavalta Kaleva",                "fmisid": "103142" },
+  { "municipality": "Harjavalta",  "stationName": "Harjavalta Pirkkala",              "fmisid": "103143" },
+  { "municipality": "Raahe",       "stationName": "Raahe Lapaluoto",                  "fmisid": "103145" },
+  { "municipality": "Raahe",       "stationName": "Raahe keskusta",                    "fmisid": "103147" },
+  { "municipality": "Joensuu",     "stationName": "Joensuu Koskikatu 1",              "fmisid": "103148" },
+  { "municipality": "Mikkeli",     "stationName": "Mikkeli Porrassalmenkatu",          "fmisid": "103149" },
+  { "municipality": "Pietarsaari", "stationName": "Pietarsaari Bottenviksvägen",       "fmisid": "103152" },
+  { "municipality": "Luoto",       "stationName": "Luoto Vikarholmen",                 "fmisid": "103153" },
+  { "municipality": "Hollola",     "stationName": "Hollola Kansankatu siirrettävä",    "fmisid": "103814" },
+  { "municipality": "Rovaniemi",   "stationName": "Rovaniemi Rovakatu",               "fmisid": "103816" },
+  {
+    "municipality": "Kuusamo",
+    "stationName": "Siilinjärvi Musti",
+    "fmisid": "105425"
+  },
+  {
+    "municipality": "Varkaus",
+    "stationName": "Varkaus Kosulanniemi Rantalankatu",
+    "fmisid": "106417"
+  },
+  {
+    "municipality": "Savonlinna",
+    "stationName": "Savonlinna Haapasalmi",
+    "fmisid": "106418"
+  },
+  {
+    "municipality": "Raisio",
+    "stationName": "Raisio Kaanaa Sakunpiha",
+    "fmisid": "106419"
+  },
+  {
+    "municipality": "Pori",
+    "stationName": "Pori Paanakedonkatu",
+    "fmisid": "106420"
+  },
+  {
+    "municipality": "Siilinjärvi",
+    "stationName": "Siilinjärvi Murtomäki",
+    "fmisid": "106629"
+  },
+  {
+    "municipality": "Raisio",
+    "stationName": "Raisio Ihala",
+    "fmisid": "106630"
+  },
+  {
+    "municipality": "Jyväskylä",
+    "stationName": "Jyväskylä Hannikaisenkatu",
+    "fmisid": "106796"
+  },
+  {
+    "municipality": "Turku",
+    "stationName": "Turku Kauppatori väliaikainen",
+    "fmisid": "106797"
+  },
+  {
+    "municipality": "Espoo",
+    "stationName": "Espoo Länsiväylä Friisilä",
+    "fmisid": "106949"
+  },
+  {
+    "municipality": "Vantaa",
+    "stationName": "Vantaa Tikkurila Talvikkitie",
+    "fmisid": "106951"
+  },
+  {
+    "municipality": "Kirkkonummi",
+    "stationName": "Kirkkonummi keskusta",
+    "fmisid": "106953"
+  },
+  {
+    "municipality": "Kuopio",
+    "stationName": "Kuopio Savilahti KYS",
+    "fmisid": "106954"
+  },
+  {
+    "municipality": "Siilinjärvi",
+    "stationName": "Siilinjärvi Kuuslahti",
+    "fmisid": "107026"
+  },
+  {
+    "municipality": "Tornio",
+    "stationName": "Tornio Näätsaari",
+    "fmisid": "107141"
+  },
+  {
+    "municipality": "Tornio",
+    "stationName": "Tornio Keskusta",
+    "fmisid": "107142"
+  },
+  {
+    "municipality": "Lohja",
+    "stationName": "Lohja Harjula",
+    "fmisid": "107147"
+  },
+  {
+    "municipality": "Kotka",
+    "stationName": "Kotka Mussalo satama/siirrettävä",
+    "fmisid": "107164"
+  },
+  {
+    "municipality": "Helsinki",
+    "stationName": "Helsinki Paloheinä",
+    "fmisid": "107165"
+  },
+  {
+    "municipality": "Hyvinkää",
+    "stationName": "Hyvinkää Kruununpuisto",
+    "fmisid": "107166"
+  },
+  {
+    "municipality": "Äänekoski",
+    "stationName": "Äänekoski Paloasema",
+    "fmisid": "107168"
+  },
+  {
+    "municipality": "Kemi",
+    "stationName": "Kemi Keskusta",
+    "fmisid": "107218"
+  },
+  {
+    "municipality": "Lahti",
+    "stationName": "Lahti Mustamäenkatu",
+    "fmisid": "107282"
+  },
+  {
+    "municipality": "Espoo",
+    "stationName": "Espoo Pohjois-Tapiola 2",
+    "fmisid": "107399"
+  },
+  {
+    "municipality": "Jyväskylä",
+    "stationName": "Jyväskylä Jyskä",
+    "fmisid": "107401"
+  },
+  {
+    "municipality": "Kuopio",
+    "stationName": "Kuopio Kurkimäki",
+    "fmisid": "107541"
+  },
+  {
+    "municipality": "Siilinjärvi",
+    "stationName": "Siilinjärvi Ranta",
+    "fmisid": "107542"
+  },
+  {
+    "municipality": "Lappeenranta",
+    "stationName": "Lappeenranta Ojala-Tuomela",
+    "fmisid": "107379"
+  },
+  {
+    "municipality": "Varkaus",
+    "stationName": "Varkaus Kommila",
+    "fmisid": "107382"
+  },
+  {
+    "municipality": "Heinola",
+    "stationName": "Heinola Tommola",
+    "fmisid": "107392"
+  },
+  {
+    "municipality": "Heinola",
+    "stationName": "Heinola Vierumäki",
+    "fmisid": "107393"
+  },
+  {
+    "municipality": "Raasepori",
+    "stationName": "Raasepori Karjaa",
+    "fmisid": "108098"
+  },
+  {
+    "municipality": "Mariehamina",
+    "stationName": "Mariehamn Ålandsvägen",
+    "fmisid": "108160"
+  },
+  {
+    "municipality": "Rauma",
+    "stationName": "Rauma Sinisaari",
+    "fmisid": "778578"
+  }
+]

@@ -1,25 +1,43 @@
 package com.example.myapplication.utilities_plus_helpers;
 
+import android.util.Log;
+
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 public class WeatherQueryBuilder {
 
     private static final String BASE_URL = "https://opendata.fmi.fi/wfs";
 
     public static String buildWeatherQuery(String municipality) {
-        return BASE_URL +
-                "?request=getFeature" +
-                "&storedquery_id=fmi::observations::weather::hourly::simple" +
-                "&place=" + municipality +
-                "&parameters=TA_PT1H_AVG,WAWA_PT1H_RANK" +
-                "&format=text/xml";
+        String place;
+        try {
+            place = URLEncoder.encode(municipality, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            // UTF‑8 pitäisi aina olla tuettu – tässä kohtaa voi valita jonkin fallbackin
+            place = municipality;
+        }
+        return BASE_URL
+                + "?service=WFS"
+                + "&request=getFeature"
+                + "&storedquery_id=fmi::observations::weather::hourly::simple"
+                + "&place=" + place
+                + "&parameters=TA_PT1H_AVG,WAWA_PT1H_RANK"
+                + "&format=text/xml";
     }
 
     public static String buildAirQualityQuery(String fmisid) {
-        return BASE_URL +
-                "?request=getFeature" +
-                "&storedquery_id=fmi::observations::airquality::hour::simple" +
-                "&fmisid=" + fmisid +
-                "&parameters=PM10,PM2.5" +
-                "&format=text/xml";
+        Log.d("WeatherQueryBuilder", "FMISID: " + fmisid);
+        Log.d("WeatherQueryBuilder", BASE_URL
+                + "?service=WFS"
+                + "&request=getFeature"
+                + "&storedquery_id=fmi::observations::airquality::hourly::simple"
+                + "&fmisid=" + fmisid);
+        return BASE_URL
+                + "?service=WFS"
+                + "&request=getFeature"
+                + "&storedquery_id=fmi::observations::airquality::hourly::simple"
+                + "&fmisid=" + fmisid;
     }
 
 }
