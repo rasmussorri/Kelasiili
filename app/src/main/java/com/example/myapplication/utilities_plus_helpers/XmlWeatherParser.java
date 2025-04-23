@@ -1,27 +1,77 @@
 package com.example.myapplication.utilities_plus_helpers;
 
+import android.util.Log;
+
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 public class XmlWeatherParser {
-
-    // Tässä ilmatieteen laitokselta saatu vastaus xml-muodossa siivotaan, jotta saadaan halutut tiedot
-
-    public static String parse(String xml, String tagName) {
-        try {
-            String nameTag = "<BsWfs:ParameterName>" + tagName + "</BsWfs:ParameterName>";
-            // ottaa viimeisen tunnin sään
-            int tagStart = xml.lastIndexOf(nameTag);
-            if (tagStart == -1) return "-";
-
-            String valueStartTag = "<BsWfs:ParameterValue>";
-            String valueEndTag = "</BsWfs:ParameterValue>";
-
-            int valueStart = xml.indexOf(valueStartTag, tagStart);
-            int valueEnd = xml.indexOf(valueEndTag, valueStart);
-
-            if (valueStart == -1 || valueEnd == -1) return "-";
-
-            return xml.substring(valueStart + valueStartTag.length(), valueEnd).trim();
-        } catch (Exception e) {
-            return "-";
+    // simple holder for the timestamp + value
+    public static class ParameterResult {
+        public final String time;
+        public final String value;
+        public ParameterResult(String time, String value) {
+            this.time  = time;
+            this.value = value;
         }
+    }
+
+    /**
+     * Returns the last non‐NaN <ParameterValue> for tagName,
+     * together with its preceding <Time>.
+     */
+    public static ParameterResult parseWithTimestamp(String xml, String tagName) {
+        final String nameTag       = "<BsWfs:ParameterName>"  + tagName + "</BsWfs:ParameterName>";
+        final String valueStartTag = "<BsWfs:ParameterValue>";
+        final String valueEndTag   = "</BsWfs:ParameterValue>";
+        final String timeStartTag  = "<BsWfs:Time>";
+        final String timeEndTag    = "</BsWfs:Time>";
+
+        int searchPos = xml.length();
+        while (true) {
+            // find the next‐to‐last occurrence
+            int tagStart = xml.lastIndexOf(nameTag, searchPos);
+            if (tagStart < 0) break;
+
+            // extract the value immediately after it
+            int vs = xml.indexOf(valueStartTag, tagStart);
+            int ve = xml.indexOf(valueEndTag, vs);
+            if (vs < 0 || ve < 0) break;
+
+            String val = xml.substring(vs + valueStartTag.length(), ve).trim();
+            // if it’s a real number, grab its timestamp and return
+            if (!"NaN".equals(val) && !val.isEmpty() && !"-".equals(val)) {
+                // find the closest <Time> before this <ParameterName>
+                int ts = xml.lastIndexOf(timeStartTag, tagStart);
+                int te = (ts >= 0 ? xml.indexOf(timeEndTag, ts) : -1);
+                String time = "-";
+                if (ts >= 0 && te >= 0) {
+                    time = xml.substring(ts + timeStartTag.length(), te).trim();
+                }
+
+                String rawTime = xml.substring(ts + timeStartTag.length(), te).trim();
+
+                // parse & convert to Helsinki time
+                Instant instant = Instant.parse(rawTime);
+                ZonedDateTime helsinki = instant.atZone(ZoneId.of("Europe/Helsinki"));
+
+                // format as "DD Klo HH:MM", e.g. "23 Klo 11:00"
+                DateTimeFormatter fmt = DateTimeFormatter
+                        .ofPattern("dd.MM. 'Klo' HH:mm", Locale.forLanguageTag("fi"));
+                String prettyTime = helsinki.format(fmt);
+
+                Log.d("XmlWeatherParser", "Found value: " + val + " at time: " + prettyTime);
+                return new ParameterResult(prettyTime, val);
+            }
+
+            // else move window back and try the next‐earlier occurrence
+            searchPos = tagStart - 1;
+        }
+
+        // nothing found
+        return new ParameterResult("-", "-");
     }
 }

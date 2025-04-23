@@ -1,9 +1,7 @@
 package com.example.myapplication.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,27 +10,22 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
+import com.example.myapplication.AirQualityData;
 import com.example.myapplication.R;
-import com.example.myapplication.apiServices.WeatherApiService;
-import com.example.myapplication.utilities_plus_helpers.ApiServiceBuilder;
-import com.example.myapplication.utilities_plus_helpers.MunicipalityDataHelper;
 import com.example.myapplication.utilities_plus_helpers.StationHelper;
 import com.example.myapplication.utilities_plus_helpers.TrafficCameraHelper;
 import com.example.myapplication.utilities_plus_helpers.WeatherDatahelper;
-import com.example.myapplication.utilities_plus_helpers.WeatherQueryBuilder;
 import com.example.myapplication.utilities_plus_helpers.XmlWeatherParser;
 
 import java.util.List;
-
-
-
+import java.util.Map;
 
 public class TrafficPlusWeatherInfoFragment extends Fragment {
 
-
     private static final String ARG_MUNICIPALITY_NAME = "municipalityName";
-    private static final String year = "2023"; // Vuosi, jota käytetään tietojen hakemiseen
 
     public static TrafficPlusWeatherInfoFragment newInstance(String municipalityName) {
         TrafficPlusWeatherInfoFragment fragment = new TrafficPlusWeatherInfoFragment();
@@ -46,25 +39,20 @@ public class TrafficPlusWeatherInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_traffic_weather_info, container, false);
         TextView titleTextView = view.findViewById(R.id.municipalityNameTextView2);
-        String municipalityName = getArguments() != null ? getArguments().getString(ARG_MUNICIPALITY_NAME) : null;
+        TextView airQualityTextView = view.findViewById(R.id.airQualityInfoTextView);
+        String municipalityName = getArguments() != null ? getArguments().getString(ARG_MUNICIPALITY_NAME) : "";
         titleTextView.setText("Kelikamerat: " + municipalityName.toUpperCase());
+        airQualityTextView.setText("Ilmanlaatutiedot");
 
         fetchTrafficCameraImages(municipalityName, view);
-        fetchWeatherAndAirQuality(municipalityName, view);
+        setupWeatherAndAirQuality(municipalityName, view);
 
-
-        Log.d("TrafficFrag", "fetchWeatherAndAirQuality for " + municipalityName);
-
-
-
+        Log.d("TrafficFrag", "setupWeatherAndAirQuality for " + municipalityName);
         return view;
     }
 
     private void fetchTrafficCameraImages(String municipalityName, View view) {
-
-
         LinearLayout cameraContainer = view.findViewById(R.id.cameraImageContainer);
-
         TrafficCameraHelper.fetchCamerasByMunicipality(municipalityName, new TrafficCameraHelper.TrafficCameraCallback() {
             @Override
             public void onResult(List<String> cameraImageUrls) {
@@ -89,64 +77,85 @@ public class TrafficPlusWeatherInfoFragment extends Fragment {
         });
     }
 
-    private void fetchWeatherAndAirQuality(String municipalityName, View view) {
-
-        Log.d("TrafficFrag", "fetchWeatherAndAirQuality for " + municipalityName);
-
+    private void setupWeatherAndAirQuality(String municipalityName, View view) {
         TextView weatherTextView = view.findViewById(R.id.weatherTextView);
         TextView airQualityTextView = view.findViewById(R.id.airQualityText);
+        ImageView weatherIcon = view.findViewById(R.id.weatherImageView);
 
         StationHelper.fetchStationData(requireContext(), municipalityName, new StationHelper.StationListener() {
             @Override
-            public void onStationSelected(String stationId) {
-                // Now that we have the stationId, kick off both calls via your helper:
-                requireActivity().runOnUiThread(() -> {
-                    WeatherDatahelper.fetchWeatherAndAirQuality(municipalityName, stationId, new WeatherDatahelper.WeatherListener() {
-                        @Override
-                        public void onWeatherDataReceived(String temp, String symbol) {
-                            requireActivity().runOnUiThread(() ->
-                                    weatherTextView.setText("Temp: " + temp + " °C"));
-                        }
-
-                        @Override
-                        public void onAirQualityDataReceived(String pm25, String pm10, String no2, String o3,
-                                                             String so2, String co, String no,
-                                                             String aqIndex, String aqIndexClass, String aqIndexText) {
-                            StringBuilder sb = new StringBuilder();
-                            sb.append("PM2.5: ").append(pm25).append("\n");
-                            sb.append("PM10: ").append(pm10).append("\n");
-                            sb.append("NO2: ").append(no2).append("\n");
-                            sb.append("O3: ").append(o3).append("\n");
-                            sb.append("SO2: ").append(so2).append("\n");
-                            sb.append("CO: ").append(co).append("\n");
-                            sb.append("NO: ").append(no).append("\n");
-                            sb.append("Air Quality Index: ").append(aqIndex).append("\n");
-                            sb.append("AQI Class: ").append(aqIndexClass).append("\n");
-                            sb.append("AQI Description: ").append(aqIndexText).append("\n");
-                            Log.d("Fragment", "Air Quality Data: " + sb.toString());
-
-                            requireActivity().runOnUiThread(() ->
-                                    airQualityTextView.setText(sb.toString())
-                            );
-                        }
-
-                        @Override
-                        public void onError(String errorMessage) {
-                            weatherTextView.setText(errorMessage);
-                            airQualityTextView.setText(errorMessage);
-                        }
-                    });
-                });
+            public void onStationSelected(List<String> stationIds) {
+                tryNextStation(0, stationIds, municipalityName, weatherTextView, airQualityTextView, weatherIcon);
             }
 
             @Override
-            public void onError(String error) {
+            public void onError(String errorMessage) {
                 requireActivity().runOnUiThread(() ->
-                        airQualityTextView.setText(String.format("Asemaa ei löytynyt: %s", error))
+                        airQualityTextView.setText("Asemaa ei löytynyt: " + errorMessage)
                 );
             }
         });
     }
+
+    private void tryNextStation(int index,
+                                List<String> stationIds,
+                                String municipalityName,
+                                TextView weatherTextView,
+                                TextView airQualityTextView,
+                                ImageView weatherIcon) {
+        if (index >= stationIds.size()) {
+            requireActivity().runOnUiThread(() ->
+                    airQualityTextView.setText("Ei dataa")
+            );
+            return;
+        }
+        String stationId = stationIds.get(index);
+        WeatherDatahelper.fetchWeatherAndAirQuality(requireContext(),municipalityName, stationId, new WeatherDatahelper.WeatherListener() {
+            @Override
+            public void onWeatherDataReceived(String temp, int symbol, String rain) {
+                requireActivity().runOnUiThread(() -> {
+                    if (symbol != 0) {
+                        weatherIcon.setImageResource(symbol);
+                    }
+                    weatherTextView.setText(String.format("Lämpötila: %s °C\nViimeisen tunnin sademäärä: %s mm\n", temp, rain));
+                });
+            }
+
+            @Override
+            public void onAirQualityDataReceived(AirQualityData airData) {
+                if (hasAnyData(airData)) {
+                    displayAirQuality(airData, airQualityTextView);
+                } else {
+                    tryNextStation(index + 1, stationIds, municipalityName, weatherTextView, airQualityTextView, weatherIcon);
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                tryNextStation(index + 1, stationIds, municipalityName, weatherTextView, airQualityTextView, weatherIcon);
+            }
+        });
+    }
+
+    private boolean hasAnyData(AirQualityData airData) {
+        for (XmlWeatherParser.ParameterResult pr : airData.getValues().values()) {
+            if (!"-".equals(pr.value)) return true;
+        }
+        return false;
+    }
+
+    private void displayAirQuality(AirQualityData airData, TextView airQualityTextView) {
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, XmlWeatherParser.ParameterResult> entry : airData.getValues().entrySet()) {
+            sb.append(entry.getKey())
+                    .append(": ")
+                    .append(entry.getValue().value)
+                    .append(" @ ")
+                    .append(entry.getValue().time)
+                    .append("\n");
+        }
+        requireActivity().runOnUiThread(() ->
+                airQualityTextView.setText(sb.toString())
+        );
+    }
 }
-
-

@@ -12,12 +12,13 @@ import com.google.gson.reflect.TypeToken;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 public class StationHelper {
 
     public interface StationListener {
-        void onStationSelected(String stationName);
+        void onStationSelected(List<String> stationIds);
         void onError(String errorMessage);
 
     }
@@ -43,22 +44,30 @@ public class StationHelper {
                         .fromJson(sb.toString(), listType);
 
                 String normalizedMunicipality = normalize(municipality);
+                List<String> stationIds = new ArrayList<>();
 
                 // 3) Find a matching municipality (case‑insensitive)
                 for (AirQualityStation s : stations) {
-                    Log.d("StationHelper", "Kunta: " + s.getMunicipality() + ", Normalisoitu: " + normalizedMunicipality);
-                    Log.d("StationHelper", "ID listasta " + s.getStationID());
 
-
-                    if (s.getMunicipality().equalsIgnoreCase(municipality.trim())) {
-                        listener.onStationSelected(s.getStationID());
+                    String muni = normalize(s.getMunicipality());
+                    if (muni.equalsIgnoreCase(normalizedMunicipality)) {
+                        stationIds.add(s.getStationID());
                         Log.d("StationHelper", "Löydettiin asema: " + s.getStationID());
-                        return;
                     }
                 }
-                listener.onError("Ilmanlaatuasemaa ei löydy kunnalle “" + municipality + "”");
+                if (stationIds.isEmpty()) {
+                    listener.onError(
+                            "Ilmanlaatuasemaa ei löydy kunnalle \"" + municipality + "\""
+                    );
+                } else {
+                    listener.onStationSelected(stationIds);
+                }
+
+
+
+
             } catch (Exception e) {
-                Log.e("StationHelper", "Failed to load stations JSON", e);
+                Log.e("StationHelper", "Asemat JSON listaa ei saatu avattua", e);
                 listener.onError("StationHelper error: " + e.getMessage());
             }
         }).start();

@@ -17,13 +17,21 @@ public class WeatherQueryBuilder {
             // UTF‑8 pitäisi aina olla tuettu – tässä kohtaa voi valita jonkin fallbackin
             place = municipality;
         }
+        Log.d("WeatherQueryBuilder",BASE_URL
+                + "?service=WFS"
+                + "&request=getFeature"
+                + "&storedquery_id=fmi::observations::weather::hourly::simple"
+                + "&place=" + place
+                + "&parameters=TA_PT1H_AVG,WAWA_PT1H_RANK,PRA_PT1H_ACC"
+                + "&format=text/xml");
         return BASE_URL
                 + "?service=WFS"
                 + "&request=getFeature"
                 + "&storedquery_id=fmi::observations::weather::hourly::simple"
                 + "&place=" + place
-                + "&parameters=TA_PT1H_AVG,WAWA_PT1H_RANK"
+                + "&parameters=TA_PT1H_AVG,WAWA_PT1H_RANK,PRA_PT1H_ACC"
                 + "&format=text/xml";
+
     }
 
     public static String buildAirQualityQuery(String fmisid) {
