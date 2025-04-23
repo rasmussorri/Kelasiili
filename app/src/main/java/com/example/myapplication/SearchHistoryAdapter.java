@@ -41,6 +41,12 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
         return searchHistory.size();
     }
 
+    public void updateData(List<MunicipalityInfo> newSearchHistory) {
+        searchHistory.clear(); // keep same reference
+        searchHistory.addAll(newSearchHistory);
+        notifyDataSetChanged();
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView nameText, populationText, employmentRateText;
 

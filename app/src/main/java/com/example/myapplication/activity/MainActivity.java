@@ -2,6 +2,7 @@ package com.example.myapplication.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -16,9 +17,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.SearchHistoryAdapter;
+import com.example.myapplication.dataModels.MunicipalityInfo;
 import com.example.myapplication.utilities_plus_helpers.SearchedMunicipalitiesManager;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
+    private SearchHistoryAdapter adapter; // ⬅ field so we can update it
+    private RecyclerView searchHistoryRV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,20 +37,34 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        RecyclerView searchHistoryRV = findViewById(R.id.searchHistoryRV);
+        SearchedMunicipalitiesManager.loadFromPreferences(this);
+        Log.d("DEBUG", "Loaded history size: " + SearchedMunicipalitiesManager.getAll().size());
+
+        searchHistoryRV = findViewById(R.id.searchHistoryRV);
         searchHistoryRV.setLayoutManager(new LinearLayoutManager(this));
-        searchHistoryRV.setAdapter(new SearchHistoryAdapter(SearchedMunicipalitiesManager.getAll()));
+
+        adapter = new SearchHistoryAdapter(SearchedMunicipalitiesManager.getAll());
+        searchHistoryRV.setAdapter(adapter);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("DEBUG", "onResume called");
 
-        RecyclerView searchHistoryRV = findViewById(R.id.searchHistoryRV);
-        SearchHistoryAdapter adapter = new SearchHistoryAdapter(SearchedMunicipalitiesManager.getAll());
-        searchHistoryRV.setAdapter(adapter);
+        List<MunicipalityInfo> history = SearchedMunicipalitiesManager.getAll();
+        Log.d("DEBUG", "History size in onResume: " + history.size());
+
+        if (adapter != null) {
+            adapter.updateData(history);
+        }
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SearchedMunicipalitiesManager.saveToPreferences(this); // Save history when app is paused
+    }
 
     public void switchToTabView(View view) {
         // Hae kunnan nimi EditTextistä
