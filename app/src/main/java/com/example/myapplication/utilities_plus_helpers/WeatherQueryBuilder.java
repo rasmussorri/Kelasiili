@@ -14,26 +14,18 @@ public class WeatherQueryBuilder {
         String place;
         try {
             place = URLEncoder.encode(municipality, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            // UTF‑8 pitäisi aina olla tuettu – tässä kohtaa voi valita jonkin fallbackin
-            place = municipality;
+            } catch (UnsupportedEncodingException e) {
+                place = municipality;
+            }
+        // timevaluepair accepts `place=` and returns the last hourly observation
+        return "https://opendata.fmi.fi/wfs"
+                +"?service=WFS"
+                +"&version=2.0.0"
+                +"&request=getFeature"
+                +"&storedquery_id=fmi::observations::weather::timevaluepair"
+                +"&place=" + place
+                +"&timestep=60";
         }
-        Log.d("WeatherQueryBuilder",BASE_URL
-                + "?service=WFS"
-                + "&request=getFeature"
-                + "&storedquery_id=fmi::observations::weather::hourly::simple"
-                + "&place=" + place
-                + "&parameters=TA_PT1H_AVG,WAWA_PT1H_RANK,PRA_PT1H_ACC"
-                + "&format=text/xml");
-        return BASE_URL
-                + "?service=WFS"
-                + "&request=getFeature"
-                + "&storedquery_id=fmi::observations::weather::hourly::simple"
-                + "&place=" + place
-                + "&parameters=TA_PT1H_AVG,WAWA_PT1H_RANK,PRA_PT1H_ACC"
-                + "&format=text/xml";
-
-    }
 
     // Rakentaa kyselyn koordinaateilla, jos paikkakunnalta ei löydy sääasemaa
     // Voisi tehdä pelkästään tällä mutta en luota androidin geokooderiin

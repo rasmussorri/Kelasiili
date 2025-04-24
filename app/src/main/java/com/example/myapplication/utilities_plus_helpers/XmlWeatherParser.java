@@ -7,6 +7,8 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class XmlWeatherParser {
     // simple holder for the timestamp + value
@@ -73,5 +75,41 @@ public class XmlWeatherParser {
 
         // nothing found
         return new ParameterResult("-", "-");
+    }
+
+    public static ParameterResult parseTimeValuePair(String xml, String paramKey) {
+        // 1) Extract the single observation chunk
+        String obsRx =
+                "(?s)<omso:PointTimeSeriesObservation.*?"
+                        +   "param=" + paramKey + ".*?"
+                        +   "</omso:PointTimeSeriesObservation>";
+        Matcher mObs = Pattern.compile(obsRx).matcher(xml);
+        if (!mObs.find()) return new ParameterResult("-", "-");
+        String block = mObs.group();
+
+        // 2) Find all <MeasurementTVP>…</MeasurementTVP> and pick the last
+        Pattern tvp = Pattern.compile(
+                "(?s)<wml2:MeasurementTVP>.*?"
+                        +   "<wml2:time>([^<]+)</wml2:time>.*?"
+                        +   "<wml2:value>([^<]+)</wml2:value>.*?"
+                        +   "</wml2:MeasurementTVP>"
+        );
+        Matcher mTvp = tvp.matcher(block);
+        String lastTime = "-", lastVal = "-";
+        while (mTvp.find()) {
+            lastTime = mTvp.group(1).trim();
+            lastVal  = mTvp.group(2).trim();
+        }
+
+        // 3) Convert the ISO-time → Helsinki locale
+        try {
+            Instant inst = Instant.parse(lastTime);
+            ZonedDateTime hel = inst.atZone(ZoneId.of("Europe/Helsinki"));
+            lastTime = hel.format(
+                    DateTimeFormatter.ofPattern("dd.MM. 'Klo' HH:mm", Locale.forLanguageTag("fi"))
+            );
+        } catch (Exception ignored) {}
+
+        return new ParameterResult(lastTime, lastVal);
     }
 }

@@ -223,5 +223,15 @@
     "municipality": "Rauma",
     "stationName": "Rauma Sinisaari",
     "fmisid": "778578"
+  },
+  {
+    "municipality": "Vaasa",
+    "stationName": "Vaasa Vesitorni",
+    "fmisid": "103103"
+  },
+  {
+    "municipality": "Vaasa",
+    "stationName": "Vaasa keskusta Vaasanpuistikko",
+    "fmisid": "103104"
   }
 ]
