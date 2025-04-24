@@ -1,28 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:padding="12dp">
 
-    <TextView
-        android:id="@+id/municipalityNameTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Municipality Name"
-        android:textStyle="bold"
-        android:textSize="18sp" />
+    <LinearLayout
+        android:layout_width="250dp"
+        android:layout_height="65dp"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/populationTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Population" />
+        <TextView
+            android:id="@+id/municipalityNameTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Municipality Name"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/employmentRateTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Employment Rate" />
+        <TextView
+            android:id="@+id/populationTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Population" />
+
+        <TextView
+            android:id="@+id/employmentRateTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Employment Rate" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/showMunicipality"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_menu_info_details"
+        android:background="?attr/selectableItemBackgroundBorderless"/>
+
+    <ImageButton
+        android:id="@+id/deleteMunicipality"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_weight="1"
+        android:clickable="true"
+        app:srcCompat="@android:drawable/ic_delete"
+        android:background="?attr/selectableItemBackgroundBorderless"/>
 
 </LinearLayout>

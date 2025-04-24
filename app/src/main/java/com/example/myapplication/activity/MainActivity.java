@@ -43,7 +43,28 @@ public class MainActivity extends AppCompatActivity {
         searchHistoryRV = findViewById(R.id.searchHistoryRV);
         searchHistoryRV.setLayoutManager(new LinearLayoutManager(this));
 
-        adapter = new SearchHistoryAdapter(SearchedMunicipalitiesManager.getAll());
+        adapter = new SearchHistoryAdapter(
+                SearchedMunicipalitiesManager.getAll(),
+                new SearchHistoryAdapter.OnMunicipalityClickListener() {
+                    @Override
+                    public void onShowClicked(MunicipalityInfo info) {
+                        Log.d("DEBUG", "Navigating to info for: " + info.getName());
+                        Intent intent = new Intent(MainActivity.this, TabView.class);
+                        intent.putExtra("MUNICIPALITY_NAME", info.getName());
+                        startActivity(intent);
+                    }
+
+                    @Override
+                    public void onDeleteClicked(MunicipalityInfo info) {
+                        Log.d("DEBUG", "Deleting: " + info.getName());
+                        SearchedMunicipalitiesManager.removeMunicipality(info);
+                        SearchedMunicipalitiesManager.saveToPreferences(MainActivity.this);
+                        adapter.updateData(SearchedMunicipalitiesManager.getAll());
+
+                        Toast.makeText(MainActivity.this, info.getName() + " poistettu historiasta", Toast.LENGTH_SHORT).show();
+                    }
+                }
+        );
         searchHistoryRV.setAdapter(adapter);
     }
 

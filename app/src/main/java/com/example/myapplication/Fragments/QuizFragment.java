@@ -17,8 +17,10 @@ import com.example.myapplication.Question;
 import com.example.myapplication.QuizQuestionGenerator;
 import com.example.myapplication.R;
 import com.example.myapplication.dataModels.MunicipalityInfo;
+import com.example.myapplication.utilities_plus_helpers.SearchedMunicipalitiesManager;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -40,9 +42,18 @@ public class QuizFragment extends Fragment {
     }
 
     private void loadQuestions() {
-        // Normally, you'd fetch this from an API or ViewModel
-        List<MunicipalityInfo> municipalities = FakeDataProvider.getMunicipalities(); // Replace with real data
-        questionList = QuizQuestionGenerator.generateQuestions(municipalities);
+        List<MunicipalityInfo> municipalities = SearchedMunicipalitiesManager.getAll();
+
+        // Jos kunnissa ei ole tarpeeksi tietoa
+        if (municipalities.size() < 3) {
+            questionList = Collections.singletonList(new Question(
+                    "Ei tarpeeksi kuntia quizin tekemiseen.\nHae ensin vähintään 3 kuntaa!",
+                    new String[]{"OK"}, 0
+            ));
+        } else {
+            questionList = QuizQuestionGenerator.generateQuestions(municipalities);
+        }
+
         currentQuestionIndex = 0;
         displayQuestion(questionList.get(currentQuestionIndex));
     }
@@ -113,14 +124,5 @@ public class QuizFragment extends Fragment {
         });
 
         return view;
-    }
-    public static class FakeDataProvider {
-        public static List<MunicipalityInfo> getMunicipalities() {
-            List<MunicipalityInfo> list = new ArrayList<>();
-            list.add(new MunicipalityInfo("Helsinki", 650000, 58000, 50.0, 1.2));
-            list.add(new MunicipalityInfo("Espoo", 300000, 37500, 60.0, 1.5));
-            list.add(new MunicipalityInfo("Tampere", 250000, 32300, 58.5, 1.1));
-            return list;
-        }
     }
 }

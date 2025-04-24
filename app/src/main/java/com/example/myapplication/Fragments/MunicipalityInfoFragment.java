@@ -79,6 +79,7 @@ public class MunicipalityInfoFragment extends Fragment {
 
                     MunicipalityInfo info = new MunicipalityInfo(municipalityName, pop, popChange, selfRel, empRate);
                     SearchedMunicipalitiesManager.addMunicipality(info);
+                    SearchedMunicipalitiesManager.saveToPreferences(requireContext()); // Tallenna tiedot kunnan tietojen päivityksen jälkeen
                 } catch (NumberFormatException e) {
                     // Optional: Log or handle invalid data formats
                     e.printStackTrace();
