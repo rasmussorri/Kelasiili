@@ -1,7 +1,5 @@
 package com.example.myapplication.utilities_plus_helpers;
 
-import android.util.Log;
-
 import com.example.myapplication.apiServices.MunicipalityApiService;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

@@ -28,15 +28,9 @@ public class TrafficCameraHelper {
 
     public static class CameraStation {
         public String id;
-        public Geometry geometry;
 
         @SerializedName("properties")
         public Properties properties;
-    }
-
-    public static class Geometry {
-        public String type;
-        public List<Double> coordinates;
     }
 
     public static class Properties {

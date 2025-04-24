@@ -1,3 +1,4 @@
+/*
 package com.example.myapplication;
 
 public class UserStorage {
@@ -19,3 +20,4 @@ public class UserStorage {
 
 
 }
+*/

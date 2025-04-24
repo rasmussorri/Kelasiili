@@ -19,7 +19,6 @@ import com.example.myapplication.R;
 import com.example.myapplication.dataModels.MunicipalityInfo;
 import com.example.myapplication.utilities_plus_helpers.SearchedMunicipalitiesManager;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -33,8 +32,6 @@ public class QuizFragment extends Fragment {
     private TextView questionText;
     private RadioGroup answersGroup;
     private Button nextButton;
-
-
 
 
     public QuizFragment() {

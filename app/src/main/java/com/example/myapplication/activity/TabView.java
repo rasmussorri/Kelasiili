@@ -11,7 +11,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.example.myapplication.Fragments.MunicipalityInfoFragment;
 import com.example.myapplication.R;
 import com.example.myapplication.TabPagerAdapter;
 import com.google.android.material.tabs.TabLayout;

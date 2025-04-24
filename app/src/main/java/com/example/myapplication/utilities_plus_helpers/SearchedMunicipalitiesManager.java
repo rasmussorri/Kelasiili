@@ -33,14 +33,6 @@ public class SearchedMunicipalitiesManager {
         return new ArrayList<>(searchedList);
     }
 
-    public static void clear() {
-        searchedList.clear();
-    }
-
-    public static boolean isEmpty() {
-        return searchedList.isEmpty();
-    }
-
     public static void saveToPreferences(Context context) {
         SharedPreferences prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();

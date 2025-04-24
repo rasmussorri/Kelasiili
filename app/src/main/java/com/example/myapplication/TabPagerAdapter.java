@@ -5,9 +5,6 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.example.myapplication.Fragments.MunicipalityInfoFragment;
 import com.example.myapplication.Fragments.QuizFragment;
 import com.example.myapplication.Fragments.TrafficPlusWeatherInfoFragment;
@@ -20,11 +17,6 @@ public class TabPagerAdapter extends FragmentStateAdapter {
         super(fa);
         this.municipalityName = municipalityName;
     }
-
-
-
-
-
 
     @NonNull
     @Override

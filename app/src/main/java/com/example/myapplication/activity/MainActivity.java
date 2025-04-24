@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
 
     private SearchHistoryAdapter adapter; // ⬅ field so we can update it
     private RecyclerView searchHistoryRV;
+    private EditText searchMunicipality;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,24 +89,34 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void switchToTabView(View view) {
-        // Hae kunnan nimi EditTextistä
-        EditText searchMunicipality = findViewById(R.id.SearchMunicipalityEditText);
+        searchMunicipality = findViewById(R.id.SearchMunicipalityEditText);
 
-        // Virheenkäsittely: tarkista, onko EditTextissä sisältöä
         if (searchMunicipality != null && !searchMunicipality.getText().toString().trim().isEmpty()) {
 
             String municipalityName = searchMunicipality.getText().toString().trim();
 
-            // Vaihda activity_main.xml layout activity_tab_view.xml layoutiin
-            Intent intent = new Intent(this, TabView.class);
-            intent.putExtra("MUNICIPALITY_NAME", municipalityName); // Lähetä kunnan nimi seuraavaan activityyn
-            startActivity(intent);
-            // Tyhjennä EditText
-            searchMunicipality.setText("");
+            // ✅ Tarkista löytyykö kunta ennen siirtymistä
+            com.example.myapplication.utilities_plus_helpers.MunicipalityCodeHelper.fetchMunicipalityCode(
+                    municipalityName,
+                    new com.example.myapplication.utilities_plus_helpers.MunicipalityCodeHelper.CodeListener() {
+                        @Override
+                        public void onCodeReady(String code) {
+                            // ✅ Kunta löytyi — siirrytään TabViewiin
+                            Intent intent = new Intent(MainActivity.this, TabView.class);
+                            intent.putExtra("MUNICIPALITY_NAME", municipalityName);
+                            startActivity(intent);
+                            searchMunicipality.setText("");
+                        }
+
+                        @Override
+                        public void onError(String error) {
+                            // ❌ Kuntaa ei löytynyt — ei siirrytä
+                            Toast.makeText(MainActivity.this, "Kuntaa ei löydy", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
         } else {
-            // Lähetä huomautus käyttäjälle
             Toast.makeText(this, "Et antanut kunnan nimeä tekstimuodossa!", Toast.LENGTH_SHORT).show();
         }
-
     }
 }
