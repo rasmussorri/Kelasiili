@@ -73,7 +73,7 @@ public class TrafficCameraHelper {
                             if (station.properties.presets != null) {
                                 for (Preset preset : station.properties.presets) {
                                     if (preset.inCollection && preset.id != null) {
-                                        String imageUrl = "https://weathercam.digitraffic.fi/" + preset.id + ".jpg";
+                                        String imageUrl = "https://weathercam.digitraffic.fi/" + preset.id + ".jpg?ts=" + System.currentTimeMillis();
                                         imageUrls.add(imageUrl);
                                     }
                                 }

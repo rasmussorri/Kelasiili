@@ -32,7 +32,6 @@ public class StationHelper {
                 BufferedReader r = new BufferedReader(
                         new InputStreamReader(context.getAssets()
                                 .open("airQualityStationsList.JSON"), "UTF-8"));
-                Log.d("HÖÖ", "höö");
                 StringBuilder sb = new StringBuilder();
                 String line;
                 while ((line = r.readLine()) != null) sb.append(line);

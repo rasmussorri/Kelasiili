@@ -12,6 +12,8 @@ import com.example.myapplication.utilities_plus_helpers.XmlWeatherParser.Paramet
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.ResponseBody;
@@ -32,6 +34,7 @@ public class WeatherDatahelper {
     public static void fetchWeatherAndAirQuality(Context context, String municipality , String stationId, WeatherListener listener) {
 
         WeatherApiService api = ApiServiceBuilder.createService(WeatherApiService.class, "https://opendata.fmi.fi/wfs");
+        Log.d("WeatherDatahelper", "Kunta: " + municipality);
         String weatherQuery = WeatherQueryBuilder.buildWeatherQuery(municipality);
         String airQualityQuery = WeatherQueryBuilder.buildAirQualityQuery(stationId);
 
@@ -55,10 +58,14 @@ public class WeatherDatahelper {
                     try {
                         raw = Float.parseFloat(symbolId);
                     } catch (NumberFormatException e) {
-                        Log.e("WeatherDatahelper", "Virheellinen sademäärä: " + rain, e);
-                        raw = 0f;
+                        // Jos symboli antaa jonkun muun kuin luvun tai muuta shittiä, niin laitetaan oletusarvo = aurinkologo
+                        Log.e("WeatherDatahelper", "Virheellinen symboliarvo: " + symbolId, e);
+                        raw = 1;
                     }
                     int symbol = Math.round(raw);
+                    if (symbol == 0) {
+                        symbol = 1; // Jos symboli on 0, käytetään oletusarvoa
+                    }
                     String symbolString = "fmi_" + symbol;
                     Log.d("SYMBOOLI", symbolString);
 
@@ -86,21 +93,35 @@ public class WeatherDatahelper {
                     //Log.d("FMI_AIR_QUALITY_XML", xml);
 
 
-                    Map<String, ParameterResult> map = new HashMap<>();
-                    for (String tag : Arrays.asList(
-                            "QBCPM25_PT1H_AVG",
-                            "QBCPM10_PT1H_AVG",
-                            "NO2_PT1H_avg",
-                            "O3_PT1H_avg",
-                            "SO2_PT1H_avg",
-                            "CO_PT1H_avg",
-                            "NO_PT1H_avg",
-                            "AQINDEX_PT1H_avg",
-                            "AQINDEXCLASS_PT1H_avg",
-                            "AQINDEXTEXT_PT1H_avg")) {
-                        map.put(tag, XmlWeatherParser.parseWithTimestamp(xml, tag));
+                    // 1) Tunnisteet → luettavat suomennetut selitteet
+                    Map<String, String> labels = new HashMap<>();
+                    labels.put("QBCPM25_PT1H_AVG",   "PM₂.₅ ");
+                    labels.put("QBCPM10_PT1H_AVG",   "PM₁₀ ");
+                    labels.put("NO2_PT1H_avg",       "NO₂ ");
+                    labels.put("O3_PT1H_avg",        "O₃ ");
+                    labels.put("SO2_PT1H_avg",       "SO₂ ");
+                    labels.put("CO_PT1H_avg",        "CO ");
+                    labels.put("NO_PT1H_avg",        "NO ");
+                    labels.put("AQINDEX_PT1H_avg",   "Ilmanlaatu-indeksi");
+                    labels.put("AQINDEXCLASS_PT1H_avg","Ilmanlaatu-luokka");
+                    labels.put("AQINDEXTEXT_PT1H_avg","Ilmanlaatu-kuvaus");
+
+                    // 2) Halutut tagit ja suodatus
+                    List<String> tags = Arrays.asList(
+                            "QBCPM25_PT1H_AVG", "QBCPM10_PT1H_AVG", "NO2_PT1H_avg",
+                            "O3_PT1H_avg", "SO2_PT1H_avg", "CO_PT1H_avg",
+                            "NO_PT1H_avg", "AQINDEX_PT1H_avg",
+                            "AQINDEXCLASS_PT1H_avg", "AQINDEXTEXT_PT1H_avg"
+                    );
+                    Map<String, ParameterResult> filtered = new LinkedHashMap<>();
+                    for (String tag : tags) {
+                        ParameterResult pr = XmlWeatherParser.parseWithTimestamp(xml, tag);
+                        if (pr.value != null && !pr.value.isEmpty() && !"-".equals(pr.value)) {
+                            String label = labels.getOrDefault(tag, tag);
+                            filtered.put(label, pr);
+                        }
                     }
-                    listener.onAirQualityDataReceived(new AirQualityData(map));
+                    listener.onAirQualityDataReceived(new AirQualityData(filtered));
 
                 } catch (Exception e) {
                     listener.onError("Ilmanlaadun käsittely epäonnistui");
