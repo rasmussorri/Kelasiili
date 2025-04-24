@@ -20,6 +20,7 @@ import com.example.myapplication.utilities_plus_helpers.TrafficCameraHelper;
 import com.example.myapplication.utilities_plus_helpers.WeatherDatahelper;
 import com.example.myapplication.utilities_plus_helpers.XmlWeatherParser;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -42,7 +43,7 @@ public class TrafficPlusWeatherInfoFragment extends Fragment {
         TextView airQualityTextView = view.findViewById(R.id.airQualityInfoTextView);
         String municipalityName = getArguments() != null ? getArguments().getString(ARG_MUNICIPALITY_NAME) : "";
         titleTextView.setText("Kelikamerat: " + municipalityName.toUpperCase());
-        airQualityTextView.setText("Ilmanlaatutiedot");
+        airQualityTextView.setText("Ilmanlaatutiedot (tunnin keskiarvo)");
 
         fetchTrafficCameraImages(municipalityName, view);
         setupWeatherAndAirQuality(municipalityName, view);
@@ -85,6 +86,9 @@ public class TrafficPlusWeatherInfoFragment extends Fragment {
         StationHelper.fetchStationData(requireContext(), municipalityName, new StationHelper.StationListener() {
             @Override
             public void onStationSelected(List<String> stationIds) {
+                if (stationIds.isEmpty()) {
+                    stationIds = Collections.singletonList("");
+                }
                 tryNextStation(0, stationIds, municipalityName, weatherTextView, airQualityTextView, weatherIcon);
             }
 
@@ -93,6 +97,14 @@ public class TrafficPlusWeatherInfoFragment extends Fragment {
                 requireActivity().runOnUiThread(() ->
                         airQualityTextView.setText("Asemaa ei löytynyt: " + errorMessage)
                 );
+                Log.w("StationHelper", "Ei löydetty ilmanlaatuasemaa, haetaaan vain sää");
+                // fire the same loop with one empty station-ID
+                tryNextStation(0,
+                        Collections.singletonList(""),
+                        municipalityName,
+                        weatherTextView,
+                        airQualityTextView,
+                        weatherIcon);
             }
         });
     }
@@ -105,7 +117,7 @@ public class TrafficPlusWeatherInfoFragment extends Fragment {
                                 ImageView weatherIcon) {
         if (index >= stationIds.size()) {
             requireActivity().runOnUiThread(() ->
-                    airQualityTextView.setText("Ei dataa")
+                    airQualityTextView.setText("Ei dataa saatavilla tällä hetkellä")
             );
             return;
         }

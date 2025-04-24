@@ -9,6 +9,7 @@ public class WeatherQueryBuilder {
 
     private static final String BASE_URL = "https://opendata.fmi.fi/wfs";
 
+    // Rakentaa kyselyn paikkakunnan nimen perusteella
     public static String buildWeatherQuery(String municipality) {
         String place;
         try {
@@ -34,6 +35,19 @@ public class WeatherQueryBuilder {
 
     }
 
+    // Rakentaa kyselyn koordinaateilla, jos paikkakunnalta ei löydy sääasemaa
+    // Voisi tehdä pelkästään tällä mutta en luota androidin geokooderiin
+    public static String buildByLatLon(double lat, double lon) {
+        return "?service=WFS"
+                + "&version=2.0.0"
+                + "&request=getFeature"
+                + "&storedquery_id=fmi::observations::weather::multipointcoverage"
+                + "&latlon=" + lat + "," + lon      // latitude first!
+                + "&maxlocations=1"
+                + "&parameters=TA_PT1H_AVG,WAWA_PT1H_RANK,PRA_PT1H_ACC";
+    }
+
+    // Rakentaa kyselyn ilmanlaatudatan hakemiseksi valmiista asemalistasta
     public static String buildAirQualityQuery(String fmisid) {
         Log.d("WeatherQueryBuilder", "FMISID: " + fmisid);
         Log.d("WeatherQueryBuilder", BASE_URL
