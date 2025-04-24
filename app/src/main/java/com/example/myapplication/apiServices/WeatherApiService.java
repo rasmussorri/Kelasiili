@@ -8,7 +8,7 @@ import retrofit2.http.Url;
 public interface WeatherApiService {
 
     @GET
-    Call<ResponseBody> getCurrentWeather(@Url String fullUrl);
+    Call<ResponseBody> getCurrentWeather(@Url String url);
 
     @GET
     Call<ResponseBody> getAirQuality(@Url String url);
