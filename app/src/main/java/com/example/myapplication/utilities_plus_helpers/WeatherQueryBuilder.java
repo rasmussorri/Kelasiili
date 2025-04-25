@@ -1,5 +1,6 @@
 package com.example.myapplication.utilities_plus_helpers;
 
+import android.net.Uri;
 import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
@@ -9,8 +10,33 @@ public class WeatherQueryBuilder {
 
     private static final String BASE_URL = "https://opendata.fmi.fi/wfs";
 
-    // Rakentaa kyselyn paikkakunnan nimen perusteella
     public static String buildWeatherQuery(String municipality) {
+        String placeEncoded;
+        try {
+            placeEncoded = URLEncoder.encode(municipality, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            // UTF-8 pitää aina toimia, mutta varotoimenpiteenä:
+            Log.w("WeatherQueryBuilder", "UTF-8 encode failed, using raw: " + municipality, e);
+            placeEncoded = municipality;
+        }
+
+        // Kootaan kysely käsin, jotta '::' säilyy tallennettuna:
+        String query =
+                "storedquery_id=fmi::observations::weather::timevaluepair" +
+                        "&service=WFS" +
+                        "&version=2.0.0" +
+                        "&request=getFeature" +
+                        "&place=" + placeEncoded +
+                        "&timestep=60" +
+                        "&parameters=t2m,wawa,r_1h";
+
+        String url = BASE_URL + "?" + query;
+        Log.d("WeatherQueryBuilder", "Built URL: " + url);
+        return url;
+    }
+
+    // Rakentaa kyselyn paikkakunnan nimen perusteella
+    /*public static String buildWeatherQuery(String municipality) {
         String place;
         try {
             place = URLEncoder.encode(municipality, "UTF-8");
@@ -18,23 +44,32 @@ public class WeatherQueryBuilder {
                 place = municipality;
             }
         // timevaluepair accepts `place=` and returns the last hourly observation
-        return "https://opendata.fmi.fi/wfs"
-                +"?service=WFS"
-                +"&version=2.0.0"
-                +"&request=getFeature"
-                +"&storedquery_id=fmi::observations::weather::timevaluepair"
-                +"&place=" + place
-                +"&timestep=60";
+        String params = "t2m,wawa,r_1h";
+        return BASE_URL
+                + "?service=WFS"
+                + "&version=2.0.0"
+                + "&request=getFeature"
+                + "&storedquery_id=fmi::observations::weather::timevaluepair"
+                + "&place=" + place
+                + "&timestep=60"
+                + "&parameters=" + params;
         }
-
+    */
     // Rakentaa kyselyn koordinaateilla, jos paikkakunnalta ei löydy sääasemaa
-    // Voisi tehdä pelkästään tällä mutta en luota androidin geokooderiin
+    // Voisi tehdä pelkästään tällä mutta ei luoteta androidin geokooderiin
     public static String buildByLatLon(double lat, double lon) {
+        Log.d("WeatherQueryBuilder", "Tehtiin fallback kysely koordinaateilla:" + "?service=WFS"
+                + "&version=2.0.0"
+                + "&request=getFeature"
+                + "&storedquery_id=fmi::observations::weather::multipointcoverage"
+                + "&latlon=" + lat + "," + lon
+                + "&maxlocations=1"
+                + "&parameters=TA_PT1H_AVG,WAWA_PT1H_RANK,PRA_PT1H_ACC");
         return "?service=WFS"
                 + "&version=2.0.0"
                 + "&request=getFeature"
                 + "&storedquery_id=fmi::observations::weather::multipointcoverage"
-                + "&latlon=" + lat + "," + lon      // latitude first!
+                + "&latlon=" + lat + "," + lon
                 + "&maxlocations=1"
                 + "&parameters=TA_PT1H_AVG,WAWA_PT1H_RANK,PRA_PT1H_ACC";
     }

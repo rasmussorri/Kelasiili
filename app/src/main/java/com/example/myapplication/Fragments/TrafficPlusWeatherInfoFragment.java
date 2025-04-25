@@ -129,7 +129,18 @@ public class TrafficPlusWeatherInfoFragment extends Fragment {
                     if (symbol != 0) {
                         weatherIcon.setImageResource(symbol);
                     }
-                    weatherTextView.setText(String.format("Lämpötila: %s °C\nViimeisen tunnin sademäärä: %s mm\n", temp, rain));
+                    // Prepare main weather text
+                    String display = String.format("Lämpötila: %s °C", temp);
+                    // Add rain data if available
+                    if (rain != null && !rain.isEmpty()) {
+                        int at = rain.indexOf('@');
+                        if (at >= 0) {
+                            String rainValue = rain.substring(0, at).trim();
+                            String rainTime = rain.substring(at + 1).trim();
+                            display += String.format("\nSademäärä tunnin ajalta: %s mm @ %s", rainValue, rainTime);
+                        }
+                    }
+                    weatherTextView.setText(display);
                 });
             }
 
