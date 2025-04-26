@@ -1,13 +1,18 @@
 package com.example.myapplication.Fragments;
 
+import static android.content.ContentValues.TAG;
+
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.dataModels.MunicipalityInfo;
@@ -20,6 +25,11 @@ public class MunicipalityInfoFragment extends Fragment {
 
     private static final String ARG_MUNICIPALITY_NAME = "municipalityName";
     private static final String year = "2023"; // Vuosi, jota käytetään tietojen hakemiseen
+    private TextView populationTextView;
+    private TextView changeTextView;
+    private TextView municipalityNameTextView;
+    private TextView employmentRateTextView;
+    private TextView selfRelianceRateTextView;
 
     public static MunicipalityInfoFragment newInstance(String municipalityName) {
         MunicipalityInfoFragment fragment = new MunicipalityInfoFragment();
@@ -29,20 +39,17 @@ public class MunicipalityInfoFragment extends Fragment {
         return fragment;
     }
 
-
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_municipality_info, container, false);
-        // Hakee kunnan nimen argumenteista
 
+        populationTextView = view.findViewById(R.id.populationTextView);
+        changeTextView = view.findViewById(R.id.populationChangeTextView);
+        municipalityNameTextView = view.findViewById(R.id.municipalityNameTextView);
+        employmentRateTextView = view.findViewById(R.id.employmentRateTextView);
+        selfRelianceRateTextView = view.findViewById(R.id.jobSelfRelianceTextView);
+
+        // Hakee kunnan nimen argumenteista
         String municipalityName = getArguments() != null ? getArguments().getString(ARG_MUNICIPALITY_NAME) : null;
 
         if (municipalityName != null) {
@@ -53,11 +60,6 @@ public class MunicipalityInfoFragment extends Fragment {
     }
 
     private void fetchMunicipalityData(String municipalityName, View view){
-        TextView populationTextView = view.findViewById(R.id.populationTextView);
-        TextView changeTextView = view.findViewById(R.id.populationChangeTextView);
-        TextView municipalityNameTextView = view.findViewById(R.id.municipalityNameTextView);
-        TextView employmentRateTextView = view.findViewById(R.id.employmentRateTextView);
-        TextView selfRelianceRateTextView = view.findViewById(R.id.jobSelfRelianceTextView);
 
         municipalityNameTextView.setText(municipalityName.toUpperCase()+ " " + year);
 
@@ -81,12 +83,13 @@ public class MunicipalityInfoFragment extends Fragment {
                     SearchedMunicipalitiesManager.addMunicipality(info);
                     SearchedMunicipalitiesManager.saveToPreferences(requireContext()); // Tallenna tiedot kunnan tietojen päivityksen jälkeen
                 } catch (NumberFormatException e) {
-                    // Optional: Log or handle invalid data formats
-                    e.printStackTrace();
+                    Log.w(TAG, "Virheellinen numeroformaatti kunnassa " + municipalityName, e);
+                    Toast.makeText(requireContext(),
+                            "Palvelin palautti epäkelvon luvun: " + population,
+                            Toast.LENGTH_SHORT).show();
                 }
 
             }
-
 
             @Override
             public void onError(String errorMessage) {
