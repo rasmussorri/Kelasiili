@@ -9,7 +9,7 @@ public class ApiServiceBuilder {
     // Käytetään geneeristä metodia, joka luo API palvelun
     public static <T> T createService(Class<T> serviceClass, String baseUrl) {
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl.endsWith("/") ? baseUrl : baseUrl + "/") // Varmista lopussa '/'
+                .baseUrl(baseUrl.endsWith("/") ? baseUrl : baseUrl + "/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 

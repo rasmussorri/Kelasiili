@@ -48,7 +48,7 @@ public class TrafficPlusWeatherInfoFragment extends Fragment {
         fetchTrafficCameraImages(municipalityName, view);
         setupWeatherAndAirQuality(municipalityName, view);
 
-        Log.d("TrafficFrag", "setupWeatherAndAirQuality for " + municipalityName);
+        Log.d("TrafficFrag", "Kunta:" + municipalityName);
         return view;
     }
 
@@ -98,7 +98,7 @@ public class TrafficPlusWeatherInfoFragment extends Fragment {
                         airQualityTextView.setText("Asemaa ei löytynyt: " + errorMessage)
                 );
                 Log.w("StationHelper", "Ei löydetty ilmanlaatuasemaa, haetaaan vain sää");
-                // fire the same loop with one empty station-ID
+                // Asetetaan tyhjä arvo ilmanlaatuasemalle, jotta saadaan sää haettua
                 tryNextStation(0,
                         Collections.singletonList(""),
                         municipalityName,
@@ -129,9 +129,9 @@ public class TrafficPlusWeatherInfoFragment extends Fragment {
                     if (symbol != 0) {
                         weatherIcon.setImageResource(symbol);
                     }
-                    // Prepare main weather text
+
                     String display = String.format("Lämpötila: %s °C", temp);
-                    // Add rain data if available
+                    // Sademäärä, jos saatavilla
                     if (rain != null && !rain.isEmpty()) {
                         int at = rain.indexOf('@');
                         if (at >= 0) {

@@ -5,7 +5,7 @@ import com.google.gson.JsonObject;
 
 public class MunicipalityQueryBuilder {
 
-    // replikoidaan tilastokeskuksen vaatimaa JSON-muotoa tekemällä sitä vastaava oma query
+    // replikoidaan tilastokeskuksen vaatimaa JSON-muotoa
     public static JsonObject buildQuery(String municipalityCode, String[] dataTypes, String year){
 
         // Objekti vuodelle

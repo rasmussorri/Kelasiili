@@ -13,7 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class XmlWeatherParser {
-    // simple holder for the timestamp + value
+    // luokka johon tallentuu aikaleima
     public static class ParameterResult {
         public final String time;
         public final String value;
@@ -23,10 +23,6 @@ public class XmlWeatherParser {
         }
     }
 
-    /**
-     * Returns the last non‐NaN <ParameterValue> for tagName,
-     * together with its preceding <Time>.
-     */
     public static ParameterResult parseWithTimestamp(String xml, String tagName) {
         final String nameTag       = "<BsWfs:ParameterName>"  + tagName + "</BsWfs:ParameterName>";
         final String valueStartTag = "<BsWfs:ParameterValue>";
@@ -71,13 +67,9 @@ public class XmlWeatherParser {
         return new ParameterResult("-", "-");
     }
 
-    /**
-     * Returns the most recent non‐NaN value/time pair for the given
-     * time‐value‐pair query.  If the very latest TVP is NaN, it
-     * falls back to the next‐newest, and so on.
-     */
+
     public static ParameterResult parseTimeValuePair(String xml, String paramKey) {
-        // 1) Extract the block for this parameter
+        // Etsitään ensin PointTimeSeriesObservation tagi, joka sisältää halutun paramKey:n
         String obsRx = "(?s)<omso:PointTimeSeriesObservation.*?"
                 + "param=" + paramKey + ".*?"
                 + "</omso:PointTimeSeriesObservation>";
@@ -87,7 +79,7 @@ public class XmlWeatherParser {
         }
         String block = mObs.group();
 
-        // 2) Find all <MeasurementTVP>…</MeasurementTVP>
+        // Etsitään kaikki tagit, joissa voisi olla arvo
         Pattern tvp = Pattern.compile(
                 "(?s)<wml2:MeasurementTVP>.*?"
                         +   "<wml2:time>([^<]+)</wml2:time>.*?"
@@ -96,13 +88,13 @@ public class XmlWeatherParser {
         );
         Matcher mTvp = tvp.matcher(block);
 
-        // 3) Collect into list
+        // Kerätään aikaleima ja arvo listaan
         List<ParameterResult> readings = new ArrayList<>();
         while (mTvp.find()) {
             String isoTime = mTvp.group(1).trim();
             String rawVal  = mTvp.group(2).trim();
 
-            // convert ISO→Helsinki
+            // Muutetaan Helsingin aikavyöhykkeelle
             String prettyTime = isoTime;
             try {
                 Instant inst = Instant.parse(isoTime);
@@ -115,7 +107,7 @@ public class XmlWeatherParser {
             readings.add(new ParameterResult(prettyTime, rawVal));
         }
 
-        // 4) Walk backwards to find first non‐NaN, non‐"-"
+        // Lähdetään purkamaan listaa taaksepäin, jotta löytyisi ensimmäinen ei NaN arvo
         for (int i = readings.size() - 1; i >= 0; i--) {
             ParameterResult pr = readings.get(i);
             if (!"NaN".equals(pr.value) && !"-".equals(pr.value)) {
@@ -123,7 +115,7 @@ public class XmlWeatherParser {
             }
         }
 
-        // 5) None found
+        // Ei löydetty arvoja palautetaan "-"
         return new ParameterResult("-", "-");
     }
 }

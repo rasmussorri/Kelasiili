@@ -7,7 +7,7 @@ import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
 
-// Käytetään Retrofit-kirjastoa, joka tekee API-kutsut ja hoitaa JSON parsimiset
+// Käytetään Retrofit-kirjastoa, joka tekee API-kutsut
 // Ei tarvitse omaa API luokkaa tms niin kuin aiemmassa viikkotehtävässä
 public interface MunicipalityApiService {
     @Headers("Content-Type: application/json")

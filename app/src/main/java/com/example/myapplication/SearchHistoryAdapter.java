@@ -44,17 +44,16 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
         holder.populationText.setText("Väkiluku: " + info.getPopulation());
         holder.employmentRateText.setText("Työllisyysaste: " + info.getEmploymentRate() + "%");
 
-        //holder.showButton.setOnClickListener(v -> listener.onShowClicked(info));
         holder.showButton.setOnClickListener(v -> {
             if (listener != null) {
-                Log.d("DEBUG", "Show clicked for: " + info.getName());
+                Log.d("SearchHistoryAdapter_DEBUG", "Show clicked for: " + info.getName());
                 listener.onShowClicked(info);
             }
         });
-        //holder.deleteButton.setOnClickListener(v -> listener.onDeleteClicked(info));
+
         holder.deleteButton.setOnClickListener(v -> {
             if (listener != null) {
-                Log.d("DEBUG", "Delete clicked for: " + info.getName());
+                Log.d("SearchHistoryAdapter_DEBUG", "Delete clicked for: " + info.getName());
                 listener.onDeleteClicked(info);
             }
         });
@@ -66,7 +65,7 @@ public class SearchHistoryAdapter extends RecyclerView.Adapter<SearchHistoryAdap
     }
 
     public void updateData(List<MunicipalityInfo> newSearchHistory) {
-        searchHistory.clear(); // keep same reference
+        searchHistory.clear();
         searchHistory.addAll(newSearchHistory);
         notifyDataSetChanged();
     }

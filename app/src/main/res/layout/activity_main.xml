@@ -8,7 +8,7 @@
     android:background="#c5cae9"
     android:padding="16dp">
 
-    <!-- App title -->
+
     <TextView
         android:id="@+id/AppNameTextView"
         android:layout_width="0dp"
@@ -23,7 +23,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Search input -->
+
     <EditText
         android:id="@+id/SearchMunicipalityEditText"
         android:layout_width="0dp"
@@ -38,20 +38,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Search button -->
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/SearchMunicipalityButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
+        android:onClick="switchToTabView"
         android:text="Hae"
         android:textColor="#FFFFFF"
         app:backgroundTint="#607d8b"
-        app:layout_constraintTop_toBottomOf="@id/SearchMunicipalityEditText"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/SearchMunicipalityEditText" />
 
-    <!-- History label -->
+
     <TextView
         android:id="@+id/historyTextView"
         android:layout_width="0dp"
@@ -65,7 +66,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/deleteAll"/>
 
-    <!-- Delete all button -->
+
     <ImageButton
         android:id="@+id/deleteAll"
         android:layout_width="48dp"
@@ -78,7 +79,7 @@
         app:layout_constraintBottom_toBottomOf="@id/historyTextView"
         app:layout_constraintEnd_toEndOf="parent"/>
 
-    <!-- Search history list -->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/searchHistoryRV"
         android:layout_width="0dp"

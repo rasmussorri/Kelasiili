@@ -16,12 +16,9 @@ public class MunicipalityCodeHelper {
     }
 
     public static void fetchMunicipalityCode(String name, CodeListener listener) {
-        MunicipalityApiService api = ApiServiceBuilder.createService(
-                MunicipalityApiService.class,
-                "https://pxdata.stat.fi/PxWeb/api/v1/fi/"
-        );
+        MunicipalityApiService api = ApiClient.municipalityService();
 
-        api.getMunicipalityMetadata().enqueue(new Callback<JsonObject>() {
+        api.getMunicipalityMetadata().enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
                 if (!response.isSuccessful() || response.body() == null) {

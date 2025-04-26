@@ -1,6 +1,5 @@
 package com.example.myapplication.utilities_plus_helpers;
 
-import android.net.Uri;
 import android.util.Log;
 
 import java.io.UnsupportedEncodingException;
@@ -35,26 +34,6 @@ public class WeatherQueryBuilder {
         return url;
     }
 
-    // Rakentaa kyselyn paikkakunnan nimen perusteella
-    /*public static String buildWeatherQuery(String municipality) {
-        String place;
-        try {
-            place = URLEncoder.encode(municipality, "UTF-8");
-            } catch (UnsupportedEncodingException e) {
-                place = municipality;
-            }
-        // timevaluepair accepts `place=` and returns the last hourly observation
-        String params = "t2m,wawa,r_1h";
-        return BASE_URL
-                + "?service=WFS"
-                + "&version=2.0.0"
-                + "&request=getFeature"
-                + "&storedquery_id=fmi::observations::weather::timevaluepair"
-                + "&place=" + place
-                + "&timestep=60"
-                + "&parameters=" + params;
-        }
-    */
     // Rakentaa kyselyn koordinaateilla, jos paikkakunnalta ei löydy sääasemaa
     // Voisi tehdä pelkästään tällä mutta ei luoteta androidin geokooderiin
     public static String buildByLatLon(double lat, double lon) {

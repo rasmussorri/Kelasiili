@@ -6,6 +6,7 @@ public class AirQualityStation {
     @SerializedName("municipality")
     private String Municipality;
 
+    // Ei käytetty, mutta voisi halutessa lisätä tiedon näytölle
     @SerializedName("stationName")
     private String StationName;
 
@@ -19,21 +20,10 @@ public class AirQualityStation {
         this.StationID = stationID;
     }
 
-    public void setMunicipality(String municipality) {
-        this.Municipality = municipality;
-    }
-    public void setStationName(String stationName) {
-        this.StationName = stationName;
-    }
-    public void setStationID(String stationID) {
-        this.StationID = stationID;
-    }
     public String getMunicipality() {
         return Municipality;
     }
-    public String getStationName() {
-        return StationName;
-    }
+
     public String getStationID() {
         return StationID;
     }

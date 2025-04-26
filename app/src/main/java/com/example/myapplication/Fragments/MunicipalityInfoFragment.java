@@ -1,6 +1,5 @@
 package com.example.myapplication.Fragments;
 
-import static android.content.ContentValues.TAG;
 
 import android.os.Bundle;
 
@@ -22,7 +21,7 @@ import com.example.myapplication.utilities_plus_helpers.SearchedMunicipalitiesMa
 
 public class MunicipalityInfoFragment extends Fragment {
 
-
+    private static final String TAG = MunicipalityInfoFragment.class.getSimpleName();
     private static final String ARG_MUNICIPALITY_NAME = "municipalityName";
     private static final String year = "2023"; // Vuosi, jota käytetään tietojen hakemiseen
     private TextView populationTextView;

@@ -122,9 +122,9 @@ public class QuizFragment extends Fragment {
         answersGroup.clearCheck();
     }
     private void showQuizResult() {
-        String result = "Quiz complete! Your score: " + score + "/" + questionList.size();
+        String result = "Visa valmis! Pisteesi: " + score + "/" + questionList.size();
         new AlertDialog.Builder(getContext())
-                .setTitle("Results")
+                .setTitle("Tulokset")
                 .setMessage(result)
                 .setPositiveButton("OK", (dialog, which) -> requireActivity().onBackPressed())
                 .show();

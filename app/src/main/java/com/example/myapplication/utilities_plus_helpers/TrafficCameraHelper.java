@@ -45,14 +45,10 @@ public class TrafficCameraHelper {
     }
 
     public static void fetchCamerasByMunicipality(String municipalityName, TrafficCameraCallback callback) {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://tie.digitraffic.fi/api/weathercam/v1/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+        TrafficApiService api = ApiClient.trafficService();
 
-        TrafficApiService api = retrofit.create(TrafficApiService.class);
 
-        api.getAllCameras().enqueue(new Callback<TrafficCameraResponse>() {
+        api.getAllCameras().enqueue(new Callback<>() {
             @Override
             public void onResponse(Call<TrafficCameraResponse> call, Response<TrafficCameraResponse> response) {
                 if (response.isSuccessful() && response.body() != null) {

@@ -7,7 +7,7 @@
     android:background="#c5cae9"
     android:padding="16dp">
 
-    <!-- Question header -->
+
     <androidx.cardview.widget.CardView
         android:id="@+id/questionCard"
         android:layout_width="0dp"
@@ -31,7 +31,7 @@
             android:fontFamily="sans-serif-medium"/>
     </androidx.cardview.widget.CardView>
 
-    <!-- Question counter -->
+
     <TextView
         android:id="@+id/questionCounterTextView"
         android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginTop="8dp"/>
 
-    <!-- Answers card -->
+
     <androidx.cardview.widget.CardView
         android:id="@+id/answersCard"
         android:layout_width="0dp"
@@ -92,7 +92,7 @@
         </RadioGroup>
     </androidx.cardview.widget.CardView>
 
-    <!-- Next button -->
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/nextButton"
         android:layout_width="wrap_content"

@@ -16,7 +16,7 @@
         android:padding="16dp"
         android:gravity="center_vertical">
 
-        <!-- Text column -->
+
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -51,7 +51,7 @@
                 android:layout_marginTop="2dp"/>
         </LinearLayout>
 
-        <!-- Info button -->
+
         <ImageButton
             android:id="@+id/showMunicipality"
             android:layout_width="48dp"
@@ -62,7 +62,7 @@
             android:contentDescription="näytä"
             android:layout_marginStart="8dp"/>
 
-        <!-- Delete button -->
+
         <ImageButton
             android:id="@+id/deleteMunicipality"
             android:layout_width="48dp"
