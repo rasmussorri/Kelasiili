@@ -9,6 +9,7 @@
     tools:context=".activity.MainActivity">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
@@ -34,6 +35,7 @@
         android:id="@+id/AppNameTextView"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="sans-serif-black"
         android:lineSpacingExtra="10sp"
         android:text="DATAA KANSALLE!!"
@@ -41,7 +43,7 @@
         android:textSize="24sp"
         android:typeface="monospace"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,12 +51,12 @@
         android:id="@+id/historyTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="132dp"
+        android:layout_marginTop="144dp"
         android:fontFamily="sans-serif-medium"
         android:text="Viimeksi hakemasi kunnat"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintHorizontal_bias="0.161"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SearchMunicipalityEditText" />
 
@@ -80,4 +82,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/SearchMunicipalityEditText"
         app:layout_constraintVertical_bias="0.273" />
+
+    <ImageButton
+        android:id="@+id/deleteAll"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="28dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        app:layout_constraintBottom_toBottomOf="@+id/historyTextView"
+        app:layout_constraintStart_toEndOf="@+id/historyTextView"
+        app:layout_constraintTop_toTopOf="@+id/historyTextView"
+        app:srcCompat="@android:drawable/ic_menu_delete" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

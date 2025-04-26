@@ -14,6 +14,7 @@ import java.util.List;
 
 public class SearchedMunicipalitiesManager {
 
+    private static final int MAX_HISTORY_SIZE = 5;
     private static final List<MunicipalityInfo> searchedList = new ArrayList<>();
 
     private static final String PREF_NAME = "SearchHistoryPrefs";
@@ -25,12 +26,19 @@ public class SearchedMunicipalitiesManager {
                 return;
             }
         }
-        searchedList.add(info);
-        Log.d("DEBUG", "Municipality added: " + info.getName());
+        searchedList.add(0,info);
+
+        if (searchedList.size() > MAX_HISTORY_SIZE) {
+            searchedList.remove(searchedList.size() - 1);
+        }
     }
 
     public static List<MunicipalityInfo> getAll() {
         return new ArrayList<>(searchedList);
+    }
+
+    public static void clear() {
+        searchedList.clear();
     }
 
     public static void saveToPreferences(Context context) {

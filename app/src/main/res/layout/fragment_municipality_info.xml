@@ -28,10 +28,10 @@
             android:id="@+id/populationTextView"
             android:layout_width="144dp"
             android:layout_height="26dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="60dp"
             android:text="Väkiluku"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintHorizontal_bias="0.337"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/municipalityNameTextView" />
 
@@ -39,11 +39,11 @@
             android:id="@+id/jobSelfRelianceTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="32dp"
             android:text="Työpaikkaomavaraisuus"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/populationTextView"
             app:layout_constraintTop_toBottomOf="@+id/populationTextView" />
 
         <TextView
@@ -53,19 +53,19 @@
             android:layout_marginTop="32dp"
             android:text="Väkiluvun muutos esim %"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/jobSelfRelianceTextView"
             app:layout_constraintTop_toBottomOf="@+id/jobSelfRelianceTextView" />
 
         <TextView
             android:id="@+id/employmentRateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
-            android:text="Työllisyysaste"
+            android:layout_marginTop="32dp"
+            android:text="Työllisyysaste (%)"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/populationChangeTextView"
             app:layout_constraintTop_toBottomOf="@+id/populationChangeTextView" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private SearchHistoryAdapter adapter; // ⬅ field so we can update it
     private RecyclerView searchHistoryRV;
     private EditText searchMunicipality;
+    private ImageButton deleteAll;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,19 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
         searchHistoryRV.setAdapter(adapter);
+
+        deleteAll = findViewById(R.id.deleteAll);
+        deleteAll.setOnClickListener(v -> {
+            // Tyhjennetään muistissa ja tallennetaan
+            SearchedMunicipalitiesManager.clear();
+            SearchedMunicipalitiesManager.saveToPreferences(MainActivity.this);
+
+            // Päivitetään listanäkymä ja näytetään vahvistus
+            adapter.updateData(SearchedMunicipalitiesManager.getAll());
+            Toast.makeText(MainActivity.this,
+                    "Hakuhistoria tyhjennetty",
+                    Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override

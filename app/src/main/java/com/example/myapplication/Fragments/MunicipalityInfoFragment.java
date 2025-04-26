@@ -68,8 +68,8 @@ public class MunicipalityInfoFragment extends Fragment {
                 // päivittää kunnan tiedot
                 populationTextView.setText("Väkiluku: " + population);
                 changeTextView.setText("Väkiluvun muutos: " + change);
-                employmentRateTextView.setText("Työllisyysaste: " + employmentRate);
-                selfRelianceRateTextView.setText("Työpaikkaomavaraisuus: " + selfRelianceRate);
+                employmentRateTextView.setText("Työllisyysaste-%: " + employmentRate);
+                selfRelianceRateTextView.setText("Työpaikkaomavaraisuus-%: " + selfRelianceRate);
 
                 try {
                     int pop = Integer.parseInt(population);
