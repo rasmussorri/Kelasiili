@@ -1,98 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/main"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.MainActivity">
+    android:background="#c5cae9"
+    android:padding="16dp">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SearchMunicipalityButton" />
-
-    <EditText
-        android:id="@+id/SearchMunicipalityEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="76dp"
-        android:ems="10"
-        android:hint="Hae kuntaa"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+    <!-- App title -->
     <TextView
         android:id="@+id/AppNameTextView"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="16dp"
-        android:fontFamily="sans-serif-black"
-        android:lineSpacingExtra="10sp"
-        android:text="DATAA KANSALLE!!"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        android:typeface="monospace"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/historyTextView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="144dp"
-        android:fontFamily="sans-serif-medium"
-        android:text="Viimeksi hakemasi kunnat"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.161"
+        android:text="DATAA KANSALLE!!"
+        android:textSize="24sp"
+        android:fontFamily="monospace"
+        android:textStyle="bold"
+        android:textColor="#303f9f"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SearchMunicipalityEditText" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/searchHistoryRV"
-        android:layout_width="399dp"
-        android:layout_height="421dp"
-        android:layout_marginTop="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+    <!-- Search input -->
+    <EditText
+        android:id="@+id/SearchMunicipalityEditText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:hint="Hae kuntaa"
+        android:padding="12dp"
+        android:backgroundTint="#303f9f"
+        android:textColor="#212121"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/AppNameTextView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/historyTextView" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-    <Button
+    <!-- Search button -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/SearchMunicipalityButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="switchToTabView"
+        android:layout_marginTop="12dp"
         android:text="Hae"
-        app:layout_constraintBottom_toTopOf="@+id/historyTextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        android:textColor="#FFFFFF"
+        app:backgroundTint="#607d8b"
+        app:layout_constraintTop_toBottomOf="@id/SearchMunicipalityEditText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/SearchMunicipalityEditText"
-        app:layout_constraintVertical_bias="0.273" />
+        app:layout_constraintEnd_toEndOf="parent"/>
 
+    <!-- History label -->
+    <TextView
+        android:id="@+id/historyTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Viimeksi hakemasi kunnat"
+        android:textSize="20sp"
+        android:fontFamily="sans-serif-medium"
+        android:textColor="#303f9f"
+        app:layout_constraintTop_toBottomOf="@id/SearchMunicipalityButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/deleteAll"/>
+
+    <!-- Delete all button -->
     <ImageButton
         android:id="@+id/deleteAll"
-        android:layout_width="80dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="28dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@android:drawable/ic_menu_delete"
+        app:tint="#607d8b"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:clickable="true"
-        app:layout_constraintBottom_toBottomOf="@+id/historyTextView"
-        app:layout_constraintStart_toEndOf="@+id/historyTextView"
-        app:layout_constraintTop_toTopOf="@+id/historyTextView"
-        app:srcCompat="@android:drawable/ic_menu_delete" />
+        android:contentDescription="Poista kaikki"
+        app:layout_constraintTop_toTopOf="@id/historyTextView"
+        app:layout_constraintBottom_toBottomOf="@id/historyTextView"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Search history list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/searchHistoryRV"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintTop_toBottomOf="@id/historyTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
