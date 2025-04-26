@@ -1,53 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:padding="12dp">
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="#3f51b5">
 
     <LinearLayout
-        android:layout_width="250dp"
-        android:layout_height="65dp"
-        android:orientation="vertical">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:gravity="center_vertical">
 
-        <TextView
-            android:id="@+id/municipalityNameTV"
-            android:layout_width="wrap_content"
+        <!-- Text column -->
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Municipality Name"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/populationTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Population" />
+            <TextView
+                android:id="@+id/municipalityNameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Municipality Name"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"/>
 
-        <TextView
-            android:id="@+id/employmentRateTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Employment Rate" />
+            <TextView
+                android:id="@+id/populationTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Population: 46 490"
+                android:textSize="14sp"
+                android:textColor="#c5cae9"
+                android:layout_marginTop="4dp"/>
+
+            <TextView
+                android:id="@+id/employmentRateTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Employment Rate: 75.8 %"
+                android:textSize="14sp"
+                android:textColor="#c5cae9"
+                android:layout_marginTop="2dp"/>
+        </LinearLayout>
+
+        <!-- Info button -->
+        <ImageButton
+            android:id="@+id/showMunicipality"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_menu_info_details"
+            app:tint="#FFC107"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="näytä"
+            android:layout_marginStart="8dp"/>
+
+        <!-- Delete button -->
+        <ImageButton
+            android:id="@+id/deleteMunicipality"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@android:drawable/ic_delete"
+            app:tint="#F44336"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="poista"
+            android:layout_marginStart="8dp"/>
     </LinearLayout>
-
-    <ImageButton
-        android:id="@+id/showMunicipality"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_weight="1"
-        android:clickable="true"
-        app:srcCompat="@android:drawable/ic_menu_info_details"
-        android:background="?attr/selectableItemBackgroundBorderless"/>
-
-    <ImageButton
-        android:id="@+id/deleteMunicipality"
-        android:layout_width="65dp"
-        android:layout_height="65dp"
-        android:layout_weight="1"
-        android:clickable="true"
-        app:srcCompat="@android:drawable/ic_delete"
-        android:background="?attr/selectableItemBackgroundBorderless"/>
-
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>
