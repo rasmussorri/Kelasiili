@@ -1,73 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.TrafficPlusWeatherInfoFragment">
+    android:background="#c5cae9">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
-        <!-- Municipality title -->
         <TextView
             android:id="@+id/municipalityNameTextView2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Kunnan nimi tähän"
-            android:textAlignment="center"
+            android:text="Kelkamerat: POSIO"
             android:textSize="24sp"
-            android:fontFamily="sans-serif-black"
-            android:layout_margin="16dp"
+            android:fontFamily="sans-serif-medium"
+            android:gravity="center"
+            android:textColor="#303f9f"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"/>
 
-        <!-- 1) Camera images in vertical chain -->
         <ScrollView
             android:id="@+id/cameraScrollView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:fillViewport="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:background="#3f51b5"
+            android:padding="8dp"
             app:layout_constraintTop_toBottomOf="@id/municipalityNameTextView2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toTopOf="@+id/weatherContainer"
-            app:layout_constraintVertical_chainStyle="spread"
-            app:layout_constraintVertical_weight="5">
+            app:layout_constraintVertical_weight="5"
+            app:layout_constraintVertical_chainStyle="spread">
 
             <LinearLayout
                 android:id="@+id/cameraImageContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="8dp" />
+                android:orientation="vertical"/>
         </ScrollView>
 
-        <!-- 2) Weather block, with AQ label at its bottom -->
         <LinearLayout
             android:id="@+id/weatherContainer"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_background"
             android:padding="16dp"
             app:layout_constraintTop_toBottomOf="@id/cameraScrollView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/airQualityScrollView">
+            app:layout_constraintBottom_toTopOf="@+id/airQualityScrollView"
+            app:layout_constraintVertical_weight="3">
 
-            <!-- Weather label -->
             <TextView
                 android:id="@+id/weatherInfoTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sää"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textColor="#607d8b"
+                android:textStyle="bold"/>
 
-            <!-- Icon + details -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -76,10 +76,9 @@
 
                 <ImageView
                     android:id="@+id/weatherImageView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="Sääikon"
-                    android:src="@android:drawable/btn_star" />
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@android:drawable/ic_menu_compass"/>
 
                 <TextView
                     android:id="@+id/weatherTextView"
@@ -87,48 +86,50 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_weight="1"
-                    android:text="Tähän säätiedot:\nPilvistä tms.\nLämpötila"
-                    android:textSize="16sp" />
+                    android:text="Lämpötila: -2.7 °C\nSademäärä viime tunnilta: 0.0 mm"
+                    android:textSize="16sp"
+                    android:textColor="#FFFFFF"/>
             </LinearLayout>
-
-            <!-- Air quality label now inside weatherContainer -->
-            <TextView
-                android:id="@+id/airQualityInfoTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:text="Ilmanlaatuhommia"
-                android:textSize="18sp" />
         </LinearLayout>
 
-        <!-- 3) Air-quality scroll -->
         <ScrollView
             android:id="@+id/airQualityScrollView"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:fillViewport="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/rounded_background"
+            android:padding="16dp"
             app:layout_constraintTop_toBottomOf="@id/weatherContainer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_weight="3">
+            app:layout_constraintVertical_weight="2">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="8dp">
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/airQualityInfoTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ilmanlaatutiedot (tunnin keskiarvo)"
+                    android:textSize="18sp"
+                    android:textColor="#607d8b"
+                    android:textStyle="bold"
+                    android:layout_marginBottom="8dp"/>
 
                 <TextView
                     android:id="@+id/airQualityText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Ilmanlaatu"
-                    android:textColor="#444444"
+                    android:text="NO₂ (µg/m³): 0.6 @ 26.04. Klo 11:00\nO₃ (µg/m³): 52.7 @ 26.04. Klo 11:00\nSO₂ (µg/m³): 0.9 @ 26.04. Klo 11:00\nIlmanlaatu-indeksi: 1.0 @ 26.04. Klo 11:00"
                     android:textSize="16sp"
-                    android:lineSpacingExtra="4dp" />
+                    android:textColor="#FFFFFF"
+                    android:lineSpacingExtra="4dp"/>
             </LinearLayout>
         </ScrollView>
 

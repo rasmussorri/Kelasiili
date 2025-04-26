@@ -41,7 +41,7 @@ public class TabView extends AppCompatActivity {
                             tab.setText("Kunnan tiedot");
                             break;
                         case 1:
-                            tab.setText("Liikenne ja sää");
+                            tab.setText("Liikenne/sää");
                             break;
                         case 2:
                             tab.setText("Tietovisa");
