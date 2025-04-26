@@ -30,53 +30,13 @@ public class QuizFragment extends Fragment {
     private int score = 0;
 
     private TextView questionText;
+    private TextView questionCounterTextView;
     private RadioGroup answersGroup;
     private Button nextButton;
 
 
     public QuizFragment() {
         // Required empty public constructor
-    }
-
-    private void loadQuestions() {
-        List<MunicipalityInfo> municipalities = SearchedMunicipalitiesManager.getAll();
-
-        // Jos kunnissa ei ole tarpeeksi tietoa
-        if (municipalities.size() < 3) {
-            questionList = Collections.singletonList(new Question(
-                    "Ei tarpeeksi kuntia quizin tekemiseen.\nHae ensin vähintään 3 kuntaa!",
-                    new String[]{"OK"}, 0
-            ));
-        } else {
-            questionList = QuizQuestionGenerator.generateQuestions(municipalities);
-        }
-
-        currentQuestionIndex = 0;
-        displayQuestion(questionList.get(currentQuestionIndex));
-    }
-
-    private void displayQuestion(Question q) {
-        questionText.setText(q.getQuestionText());
-        answersGroup.removeAllViews(); // Clear old options
-
-        String[] options = q.getOptions();
-        for (int i = 0; i < options.length; i++) {
-            RadioButton rb = new RadioButton(getContext());
-            rb.setText(options[i]);
-            rb.setId(i); // Important: ID matches index
-            answersGroup.addView(rb);
-        }
-
-        nextButton.setAlpha(0.5f); // Make button dimmed again
-        answersGroup.clearCheck(); // Clear previous selection
-    }
-    private void showQuizResult() {
-        String result = "Quiz complete! Your score: " + score + "/" + questionList.size();
-        new AlertDialog.Builder(getContext())
-                .setTitle("Results")
-                .setMessage(result)
-                .setPositiveButton("OK", (dialog, which) -> requireActivity().onBackPressed())
-                .show();
     }
 
     @Override
@@ -90,6 +50,7 @@ public class QuizFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quiz, container, false);
         questionText = view.findViewById(R.id.questionTextView);
+        questionCounterTextView = view.findViewById(R.id.questionCounterTextView);
         answersGroup = view.findViewById(R.id.answersRG);
         nextButton = view.findViewById(R.id.nextButton);
         // Inflate the layout for this fragment
@@ -121,5 +82,51 @@ public class QuizFragment extends Fragment {
         });
 
         return view;
+    }
+    private void loadQuestions() {
+        List<MunicipalityInfo> municipalities = SearchedMunicipalitiesManager.getAll();
+
+        // Jos kunnissa ei ole tarpeeksi tietoa
+        if (municipalities.size() < 3) {
+            questionList = Collections.singletonList(new Question(
+                    "Ei tarpeeksi kuntia quizin tekemiseen.\nHae ensin vähintään 3 kuntaa!",
+                    new String[]{"OK"}, 0
+            ));
+        } else {
+            questionList = QuizQuestionGenerator.generateQuestions(municipalities);
+        }
+
+        currentQuestionIndex = 0;
+        displayQuestion(questionList.get(currentQuestionIndex));
+    }
+
+    private void displayQuestion(Question q) {
+        // Päivitä laskuri: “Kysymys X/10”
+        int total = questionList.size();
+        questionCounterTextView.setText(
+                "Kysymys " + (currentQuestionIndex + 1) + "/" + total
+        );
+
+        // Varsinainen kysymys ja vaihtoehdot
+        questionText.setText(q.getQuestionText());
+        answersGroup.removeAllViews();
+        String[] options = q.getOptions();
+        for (int i = 0; i < options.length; i++) {
+            RadioButton rb = new RadioButton(getContext());
+            rb.setText(options[i]);
+            rb.setId(i);
+            answersGroup.addView(rb);
+        }
+
+        nextButton.setAlpha(0.5f);
+        answersGroup.clearCheck();
+    }
+    private void showQuizResult() {
+        String result = "Quiz complete! Your score: " + score + "/" + questionList.size();
+        new AlertDialog.Builder(getContext())
+                .setTitle("Results")
+                .setMessage(result)
+                .setPositiveButton("OK", (dialog, which) -> requireActivity().onBackPressed())
+                .show();
     }
 }

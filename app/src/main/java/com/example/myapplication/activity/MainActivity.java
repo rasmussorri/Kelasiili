@@ -1,14 +1,18 @@
 package com.example.myapplication.activity;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -25,9 +29,10 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SearchHistoryAdapter adapter; // ⬅ field so we can update it
+    private SearchHistoryAdapter adapter;
     private RecyclerView searchHistoryRV;
     private EditText searchMunicipality;
+    private Button searchButton;
     private ImageButton deleteAll;
 
     @Override
@@ -40,11 +45,22 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-        SearchedMunicipalitiesManager.loadFromPreferences(this);
-        Log.d("DEBUG", "Loaded history size: " + SearchedMunicipalitiesManager.getAll().size());
+        try {
+            SearchedMunicipalitiesManager.loadFromPreferences(this);
+        } catch (Exception e) {
+            Log.e(TAG, "Error loading history, clearing it", e);
+            SearchedMunicipalitiesManager.clear();
+            Toast.makeText(this,
+                    "Hakuhistoria vioittunut ja tyhjennetty",
+                    Toast.LENGTH_LONG).show();
+        }
 
         searchHistoryRV = findViewById(R.id.searchHistoryRV);
         searchHistoryRV.setLayoutManager(new LinearLayoutManager(this));
+
+        searchMunicipality = findViewById(R.id.SearchMunicipalityEditText);
+        deleteAll = findViewById(R.id.deleteAll);
+        searchButton = findViewById(R.id.SearchMunicipalityButton);
 
         adapter = new SearchHistoryAdapter(
                 SearchedMunicipalitiesManager.getAll(),
@@ -70,17 +86,24 @@ public class MainActivity extends AppCompatActivity {
         );
         searchHistoryRV.setAdapter(adapter);
 
-        deleteAll = findViewById(R.id.deleteAll);
         deleteAll.setOnClickListener(v -> {
-            // Tyhjennetään muistissa ja tallennetaan
-            SearchedMunicipalitiesManager.clear();
-            SearchedMunicipalitiesManager.saveToPreferences(MainActivity.this);
-
-            // Päivitetään listanäkymä ja näytetään vahvistus
-            adapter.updateData(SearchedMunicipalitiesManager.getAll());
-            Toast.makeText(MainActivity.this,
-                    "Hakuhistoria tyhjennetty",
-                    Toast.LENGTH_SHORT).show();
+            new AlertDialog.Builder(this)
+                    .setTitle("Tyhjennä historia?")
+                    .setMessage("Haluatko varmasti poistaa kaikki hakutiedot?")
+                    .setPositiveButton("Kyllä", (dialog, which) -> {
+                        SearchedMunicipalitiesManager.clear();
+                        try {
+                            SearchedMunicipalitiesManager.saveToPreferences(this);
+                        } catch (Exception e) {
+                            Log.e(TAG, "Failed to save after clear", e);
+                            Toast.makeText(this, "Historian tyhjennys epäonnistui", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        adapter.updateData(SearchedMunicipalitiesManager.getAll());
+                        Toast.makeText(this, "Hakuhistoria tyhjennetty", Toast.LENGTH_SHORT).show();
+                    })
+                    .setNegativeButton("Ei", null)
+                    .show();
         });
     }
 
@@ -100,12 +123,17 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        SearchedMunicipalitiesManager.saveToPreferences(this); // Save history when app is paused
+        try {
+            SearchedMunicipalitiesManager.saveToPreferences(this); // Save history when app is paused
+        } catch (Exception e) {
+            Log.e(TAG, "Error saving history", e);
+            Toast.makeText(this,
+                    "Hakuhistorian tallennus epäonnistui",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void switchToTabView(View view) {
-        searchMunicipality = findViewById(R.id.SearchMunicipalityEditText);
-
         if (searchMunicipality != null && !searchMunicipality.getText().toString().trim().isEmpty()) {
 
             String municipalityName = searchMunicipality.getText().toString().trim();

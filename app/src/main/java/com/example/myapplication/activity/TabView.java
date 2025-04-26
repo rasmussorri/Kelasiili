@@ -1,7 +1,10 @@
 package com.example.myapplication.activity;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.activity.EdgeToEdge;
@@ -26,28 +29,30 @@ public class TabView extends AppCompatActivity {
 
         String municipalityName = getIntent().getStringExtra("MUNICIPALITY_NAME");
         TabPagerAdapter adapter = new TabPagerAdapter(this, municipalityName);
+
         ViewPager2 viewPager = findViewById(R.id.fragmentArea);
         viewPager.setAdapter(adapter);
 
         TabLayout tabLayout = findViewById(R.id.fragmentSelector);
 
-        // TabLayoutin ja ViewPager2:n yhdistäminen
-        // Mediator yhdistää nämä kaksi komponenttia. Ei voi kovakoodata xml tiedostoon,
-        // sillä muuten fragmentit eivät päivittyisi vaihdettaessa
-        new TabLayoutMediator(tabLayout, viewPager,
-                (tab, position) -> {
-                    switch (position) {
-                        case 0:
-                            tab.setText("Kunnan tiedot");
-                            break;
-                        case 1:
-                            tab.setText("Liikenne/sää");
-                            break;
-                        case 2:
-                            tab.setText("Tietovisa");
-                            break;
-                    }
-                }).attach();
+        try {
+            new TabLayoutMediator(tabLayout, viewPager,
+                    (tab, position) -> {
+                        switch (position) {
+                            case 0:
+                                tab.setText("Kunnan tiedot");
+                                break;
+                            case 1:
+                                tab.setText("Liikenne/sää");
+                                break;
+                            case 2:
+                                tab.setText("Tietovisa");
+                                break;
+                        }
+                    }).attach();
+        } catch (Exception e) {
+            Log.e(TAG, "TabLayoutMediator epäonnistui", e);
+        }
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
@@ -58,8 +63,6 @@ public class TabView extends AppCompatActivity {
     }
 
     public void switchToMainActivity(View view) {
-        // Vaihda activity_tab_view.xml layout activity_main.xml layoutiin
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
+        finish();
     }
 }

@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -12,6 +14,7 @@ import com.example.myapplication.Fragments.TrafficPlusWeatherInfoFragment;
 public class TabPagerAdapter extends FragmentStateAdapter {
 
     private String municipalityName;
+    private static final int NUM_TABS = 3;
 
     public TabPagerAdapter (FragmentActivity fa, String municipalityName) {
         super(fa);
@@ -21,20 +24,24 @@ public class TabPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        switch (position){
-            case 0:
-                return MunicipalityInfoFragment.newInstance(municipalityName);
-            case 1:
-                return TrafficPlusWeatherInfoFragment.newInstance(municipalityName);
-            case 2:
-                return new QuizFragment();
+        try {
+            switch (position) {
+                case 0: return MunicipalityInfoFragment.newInstance(municipalityName);
+                case 1: return TrafficPlusWeatherInfoFragment.newInstance(municipalityName);
+                case 2: return new QuizFragment();
+                default:
+                    Log.e("TabPagerAdapter", "createFragment: unexpected position " + position);
+                    return MunicipalityInfoFragment.newInstance(municipalityName);
+            }
+        } catch (Exception e) {
+            Log.e("TabPagerAdapter", "Error creating fragment for position " + position, e);
+            // Palauta varmuuden vuoksi info-fragment
+            return MunicipalityInfoFragment.newInstance(municipalityName);
         }
-        // Poikkeus, jos laaajennetaan ja unohtuu muokata switch
-        throw new IllegalStateException("Unexpected position: " + position);
     }
 
     @Override
     public int getItemCount() {
-        return 3;
+        return NUM_TABS;
     }
 }
