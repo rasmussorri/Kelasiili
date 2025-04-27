@@ -139,13 +139,13 @@ public class MainActivity extends AppCompatActivity {
 
             String municipalityName = searchMunicipality.getText().toString().trim();
 
-            // Tarkista löytyykö kunta ennen siirtymistä
+            // Check if the municipality name is valid before proceeding
             MunicipalityCodeHelper.fetchMunicipalityCode(
                     municipalityName,
                     new MunicipalityCodeHelper.CodeListener() {
                         @Override
                         public void onCodeReady(String code) {
-                            // Kunta löytyi — siirrytään TabViewiin
+                            // Found - proceed to the next activity
                             Intent intent = new Intent(MainActivity.this, TabView.class);
                             intent.putExtra("MUNICIPALITY_NAME", municipalityName.toUpperCase());
                             startActivity(intent);
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onError(String error) {
-                            // Kuntaa ei löytynyt — ei siirrytä
+                            // Not found - show a message
                             Toast.makeText(MainActivity.this, "Kuntaa ei löydy", Toast.LENGTH_SHORT).show();
                         }
                     });

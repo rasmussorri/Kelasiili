@@ -6,9 +6,10 @@ import retrofit2.http.GET;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
-
-// Käytetään Retrofit-kirjastoa, joka tekee API-kutsut
-// Ei tarvitse omaa API luokkaa tms niin kuin aiemmassa viikkotehtävässä
+/**
+ * Interface for the Municipality API service.
+ * This interface defines the endpoints for fetching municipality data.
+ */
 public interface MunicipalityApiService {
     @Headers("Content-Type: application/json")
     @POST("StatFin/synt/statfin_synt_pxt_12dy.px")

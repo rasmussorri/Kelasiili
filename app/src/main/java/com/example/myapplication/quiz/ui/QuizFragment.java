@@ -55,7 +55,7 @@ public class QuizFragment extends Fragment {
         nextButton = view.findViewById(R.id.nextButton);
         // Inflate the layout for this fragment
 
-        // Tekee seuraava-napista läpinäkyvän kunnes käyttäjä on valinnut vaihtoehdon
+        // Makes the next button unclickable until an answer is selected
         nextButton.setAlpha(0.5f);
         answersGroup.setOnCheckedChangeListener((group, checkedId) -> {
             nextButton.setAlpha(1.0f);
@@ -86,7 +86,7 @@ public class QuizFragment extends Fragment {
     private void loadQuestions() {
         List<MunicipalityInfo> municipalities = SearchedMunicipalitiesManager.getAll();
 
-        // Jos kunnissa ei ole tarpeeksi tietoa
+        // If the list of municipalities is less than 3, show an error message
         if (municipalities.size() < 3) {
             questionList = Collections.singletonList(new Question(
                     "Ei tarpeeksi kuntia quizin tekemiseen.\nHae ensin vähintään 3 kuntaa!",
@@ -101,13 +101,13 @@ public class QuizFragment extends Fragment {
     }
 
     private void displayQuestion(Question q) {
-        // Päivitä laskuri: “Kysymys X/10”
+        // Update the question counter
         int total = questionList.size();
         questionCounterTextView.setText(
                 "Kysymys " + (currentQuestionIndex + 1) + "/" + total
         );
 
-        // Varsinainen kysymys ja vaihtoehdot
+        // The question text and options
         questionText.setText(q.getQuestionText());
         answersGroup.removeAllViews();
         String[] options = q.getOptions();

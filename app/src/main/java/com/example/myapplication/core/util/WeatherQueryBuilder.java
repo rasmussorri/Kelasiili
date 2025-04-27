@@ -14,12 +14,12 @@ public class WeatherQueryBuilder {
         try {
             placeEncoded = URLEncoder.encode(municipality, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            // UTF-8 pitää aina toimia, mutta varotoimenpiteenä:
+
             Log.w("WeatherQueryBuilder", "UTF-8 encode failed, using raw: " + municipality, e);
             placeEncoded = municipality;
         }
 
-        // Kootaan kysely käsin, jotta '::' säilyy tallennettuna:
+
         String query =
                 "storedquery_id=fmi::observations::weather::timevaluepair" +
                         "&service=WFS" +
@@ -34,10 +34,10 @@ public class WeatherQueryBuilder {
         return url;
     }
 
-    // Rakentaa kyselyn koordinaateilla, jos paikkakunnalta ei löydy sääasemaa
-    // Voisi tehdä pelkästään tällä mutta ei luoteta androidin geokooderiin
+    // Builds the query with coordinates if the name doesn't work
+    // Could be done only with this but trust issues for the geocoder
     public static String buildByLatLon(double lat, double lon) {
-        Log.d("WeatherQueryBuilder", "Tehtiin fallback kysely koordinaateilla:" + "?service=WFS"
+        Log.d("WeatherQueryBuilder", "Fallback query:" + "?service=WFS"
                 + "&version=2.0.0"
                 + "&request=getFeature"
                 + "&storedquery_id=fmi::observations::weather::multipointcoverage"
@@ -53,7 +53,7 @@ public class WeatherQueryBuilder {
                 + "&parameters=TA_PT1H_AVG,WAWA_PT1H_RANK,PRA_PT1H_ACC";
     }
 
-    // Rakentaa kyselyn ilmanlaatudatan hakemiseksi valmiista asemalistasta
+    // Builds the query using the list of FMI station IDs in assets dir
     public static String buildAirQualityQuery(String fmisid) {
         Log.d("WeatherQueryBuilder", "FMISID: " + fmisid);
         Log.d("WeatherQueryBuilder", BASE_URL

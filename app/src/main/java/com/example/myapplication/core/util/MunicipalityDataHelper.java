@@ -31,13 +31,13 @@ public class MunicipalityDataHelper {
             public void onCodeReady(String code) {
                 MunicipalityApiService api = ApiClient.municipalityService();
 
-                // Hae väkiluku ja muutos
+                // Fetch population and change
                 JsonObject popChangeQuery = MunicipalityQueryBuilder.buildQuery(
                         code,
                         new String[]{"vaesto", "valisays"},
                         year
                 );
-                api.getPopulationAndChange(popChangeQuery).enqueue(new Callback<JsonObject>() {
+                api.getPopulationAndChange(popChangeQuery).enqueue(new Callback<>() {
                     @Override
                     public void onResponse(Call<JsonObject> call, Response<JsonObject> resp) {
                         Listener l = listenerRef.get();
@@ -52,13 +52,13 @@ public class MunicipalityDataHelper {
                         }
 
                         JsonArray values = resp.body().getAsJsonArray("value");
-                        // StatsFinland returns [change, population] for the given codes, joten vaihdetaan paikoin
-                        String change = values.size() > 0 ? values.get(0).getAsString() : "-";
-                        String pop    = values.size() > 1 ? values.get(1).getAsString() : "-";
 
-                        // Hae omavaraisuus
+                        String change = values.size() > 0 ? values.get(0).getAsString() : "-";
+                        String pop = values.size() > 1 ? values.get(1).getAsString() : "-";
+
+                        // Fetch self-reliance
                         JsonObject selfRelianceQuery = MunicipalityQueryBuilder.buildJobSelfRelianceQuery(code, year);
-                        api.getJobSelfReliance(selfRelianceQuery).enqueue(new Callback<JsonObject>() {
+                        api.getJobSelfReliance(selfRelianceQuery).enqueue(new Callback<>() {
                             @Override
                             public void onResponse(Call<JsonObject> call2, Response<JsonObject> resp2) {
                                 Listener l2 = listenerRef.get();
@@ -72,9 +72,9 @@ public class MunicipalityDataHelper {
                                 JsonArray values2 = resp2.body().getAsJsonArray("value");
                                 String self = values2.size() > 0 ? values2.get(0).getAsString() : "-";
 
-                                // Hae työllisyysaste
+                                // Fetch employment rate
                                 JsonObject employmentQuery = MunicipalityQueryBuilder.buildEmploymentRateQuery(code, year);
-                                api.getEmploymentRate(employmentQuery).enqueue(new Callback<JsonObject>() {
+                                api.getEmploymentRate(employmentQuery).enqueue(new Callback<>() {
                                     @Override
                                     public void onResponse(Call<JsonObject> call3, Response<JsonObject> resp3) {
                                         Listener l3 = listenerRef.get();
@@ -88,14 +88,15 @@ public class MunicipalityDataHelper {
                                         JsonArray values3 = resp3.body().getAsJsonArray("value");
                                         String emp = values3.size() > 0 ? values3.get(0).getAsString() : "-";
 
-                                        // Kaikki data valmiina
+                                        // All data is ready
                                         l3.onMunicipalityDataReady(pop, change, self, emp);
                                     }
 
                                     @Override
                                     public void onFailure(Call<JsonObject> call3, Throwable t3) {
                                         Listener l3 = listenerRef.get();
-                                        if (l3 != null) l3.onError("Työllisyysasteen haku epäonnistui: " + t3.getMessage());
+                                        if (l3 != null)
+                                            l3.onError("Työllisyysasteen haku epäonnistui: " + t3.getMessage());
                                     }
                                 });
                             }
@@ -103,7 +104,8 @@ public class MunicipalityDataHelper {
                             @Override
                             public void onFailure(Call<JsonObject> call2, Throwable t2) {
                                 Listener l2 = listenerRef.get();
-                                if (l2 != null) l2.onError("Omavaraisuuden haku epäonnistui: " + t2.getMessage());
+                                if (l2 != null)
+                                    l2.onError("Omavaraisuuden haku epäonnistui: " + t2.getMessage());
                             }
                         });
                     }

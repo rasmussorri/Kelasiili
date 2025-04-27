@@ -6,11 +6,11 @@ public class AirQualityStation {
     @SerializedName("municipality")
     private String Municipality;
 
-    // Ei käytetty, mutta voisi halutessa lisätä tiedon näytölle
+    // Was not used but could be added later if relevant
     @SerializedName("stationName")
     private String StationName;
 
-    // Serialisoitu jotta Gson tietää minkä niminen kenttä on JSONissa
+    // Serialized so Gson knows to find the correct field from JSON-file
     @SerializedName("fmisid")
     private String StationID;
 

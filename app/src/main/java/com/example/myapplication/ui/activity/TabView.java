@@ -50,7 +50,7 @@ public class TabView extends AppCompatActivity {
                         }
                     }).attach();
         } catch (Exception e) {
-            Log.e(TAG, "TabLayoutMediator epäonnistui", e);
+            Log.e(TAG, "TabLayoutMediator failed", e);
         }
 
 

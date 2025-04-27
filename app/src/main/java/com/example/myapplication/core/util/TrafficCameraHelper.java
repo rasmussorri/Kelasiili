@@ -73,13 +73,13 @@ public class TrafficCameraHelper {
                     callback.onResult(imageUrls);
 
                 } else {
-                    Log.e("FINTRAFFIC_ERROR", "Vastaus ei ollut onnistunut tai body oli null");
+                    Log.e("FINTRAFFIC_ERROR", "Response not successful or body is null");
                     try {
                         String errorBody = response.errorBody() != null ? response.errorBody().string() : "null";
                         Log.e("FINTRAFFIC_ERROR", "Code: " + response.code() + "\nError body:\n" + errorBody);
                         callback.onError("Virhe kameratietojen haussa. Koodi: " + response.code());
                     } catch (IOException e) {
-                        Log.e("FINTRAFFIC_ERROR", "Virheen purku epäonnistui: " + e.getMessage());
+                        Log.e("FINTRAFFIC_ERROR", "Error: " + e.getMessage());
                         callback.onError("Virhe kameratietojen haussa.");
                     }
                 }

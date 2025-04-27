@@ -35,7 +35,7 @@ public class TabPagerAdapter extends FragmentStateAdapter {
             }
         } catch (Exception e) {
             Log.e("TabPagerAdapter", "Error creating fragment for position " + position, e);
-            // Palauta varmuuden vuoksi info-fragment
+            // In case of an error, return a default fragment
             return MunicipalityInfoFragment.newInstance(municipalityName);
         }
     }

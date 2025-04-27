@@ -46,7 +46,7 @@ public class WeatherDatahelper {
         WeatherApiService api = ApiClient.weatherService();
 
 
-        // Säädatan haku
+        // Fetching weather data
         String placeUrl = WeatherQueryBuilder.buildWeatherQuery(municipality);
         Log.d("WeatherDatahelper", "Weather→place: " + placeUrl);
 
@@ -77,13 +77,13 @@ public class WeatherDatahelper {
                     return;
                 }
 
-                // Jos ollaan jo tehty fallback, niin ei enää yritetä
+                // If already fell back it is not tried again
                 if (didFallback) {
                     parseAndNotify(xml, ctx, listener);
                     return;
                 }
 
-                // Normaali parsinta ja ilmoitus
+                // Normal case
                 parseAndNotify(xml, ctx, listener);
             }
 
@@ -113,13 +113,13 @@ public class WeatherDatahelper {
             }
 
             private void parseAndNotify(String xml, Context context, WeatherListener listener) {
-                // Lämpötilan parsinta
+                // Parsing temperature
                 ParameterResult t = XmlWeatherParser.parseTimeValuePair(xml, "t2m");
                 if ("NaN".equals(t.value) || "-".equals(t.value)) {
                     t = XmlWeatherParser.parseWithTimestamp(xml, "TA_PT1H_AVG");
                 }
 
-                // Symbolin parsinta
+                // Parsing weather symbol
                 ParameterResult s = XmlWeatherParser.parseWithTimestamp(xml, "WAWA_PT1H_RANK");
                 int sym = 1;
                 try {
@@ -129,7 +129,7 @@ public class WeatherDatahelper {
                 int icon = context.getResources()
                         .getIdentifier("fmi_" + sym, "drawable", context.getPackageName());
 
-                // Sateen parsinta
+                // Parsing rain
                 ParameterResult r = XmlWeatherParser.parseTimeValuePair(xml, "r_1h");
                 if ("NaN".equals(r.value) || "-".equals(r.value)) {
                     r = XmlWeatherParser.parseTimeValuePair(xml, "ri_10min");
@@ -142,30 +142,30 @@ public class WeatherDatahelper {
             }
         });
 
-        // Ilmanlaatudatan haku ja käsittely
+        // Fetching and parsing air quality data
         String airUrl = WeatherQueryBuilder.buildAirQualityQuery(stationId);
-        api.getAirQuality(airUrl).enqueue(new Callback<ResponseBody>() {
+        api.getAirQuality(airUrl).enqueue(new Callback<>() {
             @Override
             public void onResponse(@NonNull Call<ResponseBody> call,
                                    @NonNull Response<ResponseBody> resp) {
                 try {
                     String xml = resp.body().string();
-                    //Log.d("WeatherDatahelper", "FMI_AIR_QUALITY_XML: " + xml);
 
-                    // Tunnisteet parsijalle ja selitteet fragmentille
+
+                    // Keys for parsing and labels for display
                     Map<String, String> labels = new HashMap<>();
-                    labels.put("QBCPM25_PT1H_AVG",   "PM₂.₅ (μg/m³)");
-                    labels.put("QBCPM10_PT1H_AVG",   "PM₁₀ (μg/m³)");
-                    labels.put("NO2_PT1H_avg",       "NO₂ (μg/m³)");
-                    labels.put("O3_PT1H_avg",        "O₃ (μg/m³)");
-                    labels.put("SO2_PT1H_avg",       "SO₂ (μg/m³)");
-                    labels.put("CO_PT1H_avg",        "CO (μg/m³)");
-                    labels.put("NO_PT1H_avg",        "NO (μg/m³)");
-                    labels.put("AQINDEX_PT1H_avg",   "Ilmanlaatu-indeksi");
-                    labels.put("AQINDEXCLASS_PT1H_avg","Ilmanlaatu-luokka");
-                    labels.put("AQINDEXTEXT_PT1H_avg","Ilmanlaatu-kuvaus");
+                    labels.put("QBCPM25_PT1H_AVG", "PM₂.₅ (μg/m³)");
+                    labels.put("QBCPM10_PT1H_AVG", "PM₁₀ (μg/m³)");
+                    labels.put("NO2_PT1H_avg", "NO₂ (μg/m³)");
+                    labels.put("O3_PT1H_avg", "O₃ (μg/m³)");
+                    labels.put("SO2_PT1H_avg", "SO₂ (μg/m³)");
+                    labels.put("CO_PT1H_avg", "CO (μg/m³)");
+                    labels.put("NO_PT1H_avg", "NO (μg/m³)");
+                    labels.put("AQINDEX_PT1H_avg", "Ilmanlaatu-indeksi");
+                    labels.put("AQINDEXCLASS_PT1H_avg", "Ilmanlaatu-luokka");
+                    labels.put("AQINDEXTEXT_PT1H_avg", "Ilmanlaatu-kuvaus");
 
-                    // Tunnisteet parsijalle
+                    // Keys for parsing
                     List<String> tags = Arrays.asList(
                             "QBCPM25_PT1H_AVG", "QBCPM10_PT1H_AVG", "NO2_PT1H_avg",
                             "O3_PT1H_avg", "SO2_PT1H_avg", "CO_PT1H_avg",
@@ -182,14 +182,14 @@ public class WeatherDatahelper {
 
                     listener.onAirQualityDataReceived(new AirQualityData(filtered));
                 } catch (Exception e) {
-                    Log.e("WeatherDatahelper", "Ilmanlaadun parsinta epäonnistui", e);
+                    Log.e("WeatherDatahelper", "Air quality parsing failed", e);
                     listener.onError("Ilmanlaadun käsittely epäonnistui");
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
-                Log.e("WeatherDatahelper", "Ilmanlaadun haku epäonnistui", t);
+                Log.e("WeatherDatahelper", "Air quality fetching failed", t);
                 listener.onError("Ilmanlaadun haku epäonnistui");
             }
         });
@@ -204,7 +204,7 @@ public class WeatherDatahelper {
                 return new LatLng(a.getLatitude(), a.getLongitude());
             }
         } catch (IOException e) {
-            Log.e("WeatherDatahelper", "Paikkakunnan geokoodaus epäonnistui: " + mun, e);
+            Log.e("WeatherDatahelper", "Geocoding failed: " + mun, e);
         }
         return null;
     }

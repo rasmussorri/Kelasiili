@@ -47,7 +47,7 @@ public class StationHelper {
                 for (AirQualityStation s : stations) {
                     if (normalize(s.getMunicipality()).equalsIgnoreCase(normalizedMunicipality)) {
                         stationIds.add(s.getStationID());
-                        Log.d("StationHelper", "Löydettiin asema: " + s.getStationID());
+                        Log.d("StationHelper", "Station was found: " + s.getStationID());
                     }
                 }
 
@@ -74,7 +74,7 @@ public class StationHelper {
 
 
     private static String normalize(String input) {
-        // Poistaa diakriittiset merkit ja normalisoi merkkijonon
+        // Remove diacritical marks (accents) from the string
         String normalized = Normalizer.normalize(input, Normalizer.Form.NFD);
         return normalized.replaceAll("\\p{InCombiningDiacriticalMarks}+", "");
     }

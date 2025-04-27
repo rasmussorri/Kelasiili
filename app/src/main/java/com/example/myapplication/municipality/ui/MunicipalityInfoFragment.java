@@ -22,7 +22,7 @@ public class MunicipalityInfoFragment extends Fragment {
 
     private static final String TAG = MunicipalityInfoFragment.class.getSimpleName();
     private static final String ARG_MUNICIPALITY_NAME = "municipalityName";
-    private static final String year = "2023"; // Vuosi, jota käytetään tietojen hakemiseen
+    private static final String year = "2023"; // Year for data fetching
     private TextView populationTextView;
     private TextView changeTextView;
     private TextView municipalityNameTextView;
@@ -47,7 +47,7 @@ public class MunicipalityInfoFragment extends Fragment {
         employmentRateTextView = view.findViewById(R.id.employmentRateTextView);
         selfRelianceRateTextView = view.findViewById(R.id.jobSelfRelianceTextView);
 
-        // Hakee kunnan nimen argumenteista
+        // Picks up the municipality name from the arguments
         String municipalityName = getArguments() != null ? getArguments().getString(ARG_MUNICIPALITY_NAME) : null;
 
         if (municipalityName != null) {
@@ -65,7 +65,7 @@ public class MunicipalityInfoFragment extends Fragment {
         municipalityDataHelper.fetchData(municipalityName, new MunicipalityDataHelper.Listener() {
             @Override
             public void onMunicipalityDataReady(String population, String change, String selfRelianceRate, String employmentRate) {
-                // päivittää kunnan tiedot
+                // Updates the UI with the fetched data
                 populationTextView.setText("Väkiluku: " + population);
                 changeTextView.setText("Väkiluvun muutos: " + change);
                 employmentRateTextView.setText("Työllisyysaste: " + employmentRate + "%");
@@ -79,9 +79,9 @@ public class MunicipalityInfoFragment extends Fragment {
 
                     MunicipalityInfo info = new MunicipalityInfo(municipalityName, pop, popChange, selfRel, empRate);
                     SearchedMunicipalitiesManager.addMunicipality(info);
-                    SearchedMunicipalitiesManager.saveToPreferences(requireContext()); // Tallenna tiedot kunnan tietojen päivityksen jälkeen
+                    SearchedMunicipalitiesManager.saveToPreferences(requireContext()); // Store the data in preferences
                 } catch (NumberFormatException e) {
-                    Log.w(TAG, "Virheellinen numeroformaatti kunnassa " + municipalityName, e);
+                    Log.w(TAG, "Wrong number format for the municipality " + municipalityName, e);
                     Toast.makeText(requireContext(),
                             "Palvelin palautti epäkelvon luvun: " + population,
                             Toast.LENGTH_SHORT).show();
@@ -91,7 +91,6 @@ public class MunicipalityInfoFragment extends Fragment {
 
             @Override
             public void onError(String errorMessage) {
-                // Käsittelee virheen
                 populationTextView.setText("Virhe: " + errorMessage);
 
             }

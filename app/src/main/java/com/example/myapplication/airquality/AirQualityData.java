@@ -10,7 +10,7 @@ public class AirQualityData {
     private final Map<String, ParameterResult> values;
 
     public AirQualityData(Map<String, ParameterResult> values) {
-        // Suojataan arvot, ettei niitä vahingossa muokata luomisen jälkeen
+        // Protecting the values so they cannot be modified after creation
         this.values = Collections.unmodifiableMap(values);
     }
 
