@@ -58,6 +58,7 @@
         android:id="@+id/historyTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:fontFamily="sans-serif-medium"
         android:text="Viimeksi hakemasi kunnat"
@@ -72,13 +73,14 @@
         android:id="@+id/deleteAll"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:src="@android:drawable/ic_menu_delete"
-        app:tint="#607d8b"
+        android:layout_marginEnd="16dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:contentDescription="Poista kaikki"
-        app:layout_constraintTop_toTopOf="@id/historyTextView"
+        android:src="@android:drawable/ic_menu_delete"
         app:layout_constraintBottom_toBottomOf="@id/historyTextView"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/historyTextView"
+        app:tint="#607d8b" />
 
 
     <androidx.recyclerview.widget.RecyclerView

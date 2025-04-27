@@ -76,7 +76,7 @@ public class QuizQuestionGenerator {
             return generateJobSelfRelianceQuestion(municipalities);
         }
         return generateMaxQuestion(filtered,
-                "Which city has more jobs than working residents (job self-reliance > 100%)?",
+                "Missä kunnissa työpaikkaomavaraisuus on alle 100%?",
                 Comparator.comparingDouble(MunicipalityInfo::getJobSelfReliance));
     }
 
@@ -91,7 +91,7 @@ public class QuizQuestionGenerator {
             return generateEmploymentRateQuestion(municipalities);
         }
         return generateMaxQuestion(filtered,
-                "Which city has the highest employment rate among cities with over 50,000 residents?",
+                "Missä kunnista on suurin työllisyysaste?",
                 Comparator.comparingDouble(MunicipalityInfo::getEmploymentRate));
     }
 
