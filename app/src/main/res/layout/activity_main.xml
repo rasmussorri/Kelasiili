@@ -13,16 +13,17 @@
         android:id="@+id/AppNameTextView"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="DATAA KANSALLE!!"
-        android:textSize="24sp"
+        android:layout_marginTop="8dp"
         android:fontFamily="monospace"
-        android:textStyle="bold"
-        android:textColor="#303f9f"
         android:gravity="center"
-        app:layout_constraintTop_toTopOf="parent"
+        android:text="DATAA KANSALLE!!"
+        android:textColor="#303f9f"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
-
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/SearchMunicipalityEditText"
@@ -58,13 +59,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Viimeksi hakemasi kunnat"
-        android:textSize="20sp"
         android:fontFamily="sans-serif-medium"
+        android:text="Viimeksi hakemasi kunnat"
         android:textColor="#303f9f"
-        app:layout_constraintTop_toBottomOf="@id/SearchMunicipalityButton"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toStartOf="@+id/deleteAll"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/deleteAll"/>
+        app:layout_constraintTop_toBottomOf="@id/SearchMunicipalityButton" />
 
 
     <ImageButton
